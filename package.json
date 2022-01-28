@@ -1,0 +1,38 @@
+{
+  "name": "RayTalkWorksMakeVideoProxies",
+  "productName": "RayTalkWorks MakeVideoProxies",
+  "version": "1.1.0",
+  "description": "A cross platform app for making video proxies",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "app:dir": "electron-builder --dir",
+    "app:dist": "electron-builder"
+  },
+  "author": "Raymond Steers - RayTalkWorks",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^13.1.2",
+    "electron-builder": "^22.14.5"
+  },
+  "build": {
+    "appId": "works.raytalk.MakeVideoProxies",
+    "mac": {
+      "category": "RayTalkWorksMakeVideoProxies.category.type"
+    },
+    "asarUnpack": [
+      "node_modules/ffmpeg-static/ffmpeg",
+      "node_modules/ffmpeg-static/index.js",
+      "node_modules/ffmpeg-static/package.json",
+      "node_modules/ffprobe-static/bin/${os}/${arch}/ffprobe",
+      "node_modules/ffprobe-static/index.js",
+      "node_modules/ffprobe-static/package.json"
+    ]
+  },
+  "dependencies": {
+    "cross-spawn": "^7.0.3",
+    "ffmpeg-static": "^4.4.1",
+    "ffprobe-static": "^3.0.0",
+    "filehound": "^1.17.5"
+  }
+}

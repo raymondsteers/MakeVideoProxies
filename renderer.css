@@ -1,0 +1,141 @@
+html{
+    background-color: #404040;
+    margin: 0;
+    padding: 0;
+    font-family: arial;
+    color: #d8d8d8;
+}
+.buttons{
+    border:2px solid #aaaaaa;
+    border-radius:20px;
+    background-color: #a2a2a2;
+    cursor: pointer;
+    margin: 5px;
+    padding: 5px 15px 5px 15px;
+}
+h1{
+    text-align:center;
+}
+#outputwidth{
+    width:4em;
+}
+#outputheight{
+    width:4em;
+}
+.padleftspan{
+    padding-left:5em;
+}
+label{
+    display:inline;
+}
+input{
+    display:inline;
+}
+#inputdir{
+    width:70%;
+}
+#outputdir{
+    width:70%;
+}
+#customffmpegoptions,#burnintext{
+    width:100%;
+}
+#proxyjobprogress{
+    width: 95%;
+    margin-left: 2.5%;
+}
+#activitylog{
+    border: 1px solid grey;
+    margin: 0 10px;
+    padding: 1em;
+    border-radius: 10px;
+    color:#bfb6b6;
+    overflow-y: scroll;
+    height: 200px;
+    font-size:.8em;
+}
+.activitylogitemsstart{
+    color:#6cd26c;
+}
+.activitylogitemserror{
+    color:#ff5454;
+}
+.activitylogitemsdone{
+    color:#4787e8;
+}
+.activitylogitemsalreadyexists{
+    color:#FFB200;
+}
+#startmakingproxies,#scaninputdir{
+    background-color:#1D61F4;
+}
+#fpsprogress{
+    font-size:75%;
+    color:#4787E8;
+}
+#advancedsettings{
+    background-color: #636363;
+    padding: 1em;
+    margin: 1em;
+    border-radius: 1em;
+}
+.help{
+    cursor:pointer;
+}
+.helpbox{
+    position: fixed;
+    top: 0;
+    background: rgba(0,0,0,0.65);
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 2em;
+    font-size: 1.5em;
+    overflow-y: scroll;
+}
+.helpboxcloser{
+    cursor:pointer;
+    float: right;
+    margin-top: .1em;
+    margin-right: .25em;
+    font-size: 2em;
+}
+.helpboxcontent{
+    background:#404040;
+    border: 7px solid white;
+    border-radius: 1em;
+    padding: 1em;
+}
+#showabouthelp{
+    position: fixed;
+    right: 10px;
+    top: 10px;
+}
+datalist {
+    position: absolute;
+    background-color: #b9b4b4;
+    font-family: sans-serif;
+    font-size: 0.8rem;
+}
+option {
+    color:black;
+    background-color: #dedede;
+    padding: 4px;
+    margin-bottom: 1px;
+    cursor: pointer;
+}
+#showinputdirhistory,#showoutputdirhistory{
+    margin-right: -7px;
+    margin-left: 10px;
+    font-size: 1.2em;
+    vertical-align: middle;
+}
+.opengalleryfile{
+    margin-left: .5em;
+}
+#burnintimecodecolor,#burnintextcolor,#burnintimecodebordercolor,#burnintextbordercolor{
+    width: 6em;
+}
+#pauseproxyjob,#killproxyjob{
+    background-color: #a27116;
+}

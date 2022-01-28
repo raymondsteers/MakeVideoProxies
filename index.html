@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self' data:">
+    <meta http-equiv="X-Content-Security-Policy" content="default-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self' data:">
+    <title>MakeVideoProxies</title>
+    <link rel="stylesheet" href="./renderer.css">
+  </head>
+  <body>
+      <span class="help" id="showabouthelp">about</span>
+    <h1>MakeVideoProxies v1.1.0</h1>
+    <p>
+        <label for="inputdir">Input Directory:<span id="showinputdirhistory">🔽</span></label>
+        <input id="inputdir" list="" autocomplete="off">
+        <datalist id="inputlist"></datalist>
+        <button class="buttons" id="chooseinputdir">Browse for Directory</button>
+        <button class="buttons" id="chooseinputfiles">Browse for Files</button>
+    </p>
+    <p>
+        <button class="buttons" id="scaninputdir">Scan</button>
+    </p>
+    <p>
+        <label for="onlyoneinputleveldeep">Only Go One Input level Deep:</label>
+        <input id="onlyoneinputleveldeep" type="checkbox" checked> <span class="help" id="showonlyoneinputleveldeephelp">?</span>
+    </p>
+    <p>
+        <label for="outputdir">Output Directory:<span id="showoutputdirhistory">🔽</span></label>
+        <input id="outputdir" list="" autocomplete="off">
+        <datalist id="outputlist"></datalist>
+        <button class="buttons" id="chooseoutputdir">Browse</button>
+    </p>
+    <p>
+        <span>
+            <label for="outputwidth">Output Width:</label>
+            <input id="outputwidth" type="number" min="10" max="100000">px
+        </span>
+        <span class="padleftspan">
+            <label for="outputheight">Output Height:</label>
+            <input id="outputheight" type="number" min="10" max="100000">px
+        </span>
+        <span class="padleftspan">
+            <label for="outputfps">Output FPS:</label>
+            <input id="outputfps" type="number" min="0" max="100000">FPS <span class="help" id="showoutputfpshelp">?</span>
+        </span>
+    </p>
+    <p>
+        <span>
+            <label for="appendtoqueue">Append Files to Queue:</label>
+            <input id="appendtoqueue" type="checkbox"> <span class="help" id="showappendtoqueuehelp">?</span>
+        </span>
+        <span class="padleftspan">
+            <label for="onlymakenew">Only Make New Files:</label>
+            <input id="onlymakenew" type="checkbox"> <span class="help" id="showonlymakenewfileshelp">?</span>
+        </span>
+        <span class="padleftspan">
+            <label for="autocrop">Auto Crop:</label>
+            <input id="autocrop" type="checkbox"> <span class="help" id="showautocrophelp">?</span>
+        </span>
+        <span class="padleftspan">
+            <label for="htmlgallery">Create HTML Gallery:</label>
+            <input id="htmlgallery" type="checkbox"> <span class="help" id="showcreatehtmlgalleryhelp">?</span>
+        </span>
+    </p>
+    <p>
+        <span>
+            <button class="buttons" id="startmakingproxies">Start Making Proxies</button>
+        </span>
+        <span class="padleftspan">
+            <button class="buttons" id="advanced">Show Advanced</button>
+        </span>
+        <span class="padleftspan">
+            <button class="buttons" id="pauseproxyjob" disabled>Pause Proxy Job</button>
+        </span>
+        <span class="padleftspan">
+            <button class="buttons" id="killproxyjob" disabled>Stop Proxy Job</button>
+        </span>
+    </p>
+        <div id="advancedsettings" style="display:none">
+            <p>
+                <label for="outputvideocontainer">Output File Container:</label>
+                <select id="outputvideocontainer">
+                    <option value="mov">.mov</option>
+                    <option value="mp4">.mp4</option>
+                    <option value="avi">.avi</option>
+                    <option value="mkv">.mkv</option>
+                    <option value="m4v">.m4v</option>
+                    <option value="gif">.gif</option>
+                    <option value="webm">.webm</option>
+                    <option value="ogv">.ogv</option>
+                    <option value="mjpeg">.mjpeg</option>
+                    <option value="3gp">.3gp</option>
+                    <option value="mpeg">.mpeg</option>
+                    <option value="mxf">.mxf</option>
+                </select> <span class="help" id="showfilecontainerhelp">?</span>
+            </p>
+            <p>
+                <label for="outputvideocodec">Output Video Codec:</label>
+                <select id="outputvideocodec">
+                    <option value="h263">H263</option>
+                    <option value="libx264">H264</option>
+                    <option value="libx264rgb">H264(rgb)</option>
+                    <option value="libx265">H265</option>
+                    <option value="dnxhd">DNxHD</option>
+                    <option value="prores_ks">Apple ProRes</option>
+                    <option value="vp9">VP9</option>
+                    <option value="jpeg2000">JPEG 2000</option>
+                    <option value="mpeg4">MPEG-4</option>
+                    <option value="mpeg1video">MPEG-1</option>
+                    <option value="libtheora">Theora (codec theora)</option>
+                    <option value="mjpeg">MJPEG (Motion JPEG)</option>
+                    <option value="huffyuv">Huffyuv / HuffYUV</option>
+                </select>  <span class="help" id="showvideocodecshelp">?</span>
+            </p>
+            <p>
+                <label for="outputvideopxlfmt">Output Video Pixel Format (bit depth):</label>
+                <select id="outputvideopxlfmt">
+                    <option value="yuv410p">yuv410p (8-bit)(jpeg2000)</option>
+                    <option value="yuv411p">yuv411p (8-bit)(jpeg2000)</option>
+                    <option value="yuv420p">yuv420p (8-bit)(h263/h264/h265/DNxHD/vp9/jpeg2000/mpeg4/mpeg1video/theora)</option>
+                    <option value="yuva420p">yuva420p (8-bit)(vp9)</option>
+                    <option value="yuvj420p">yuvj420p (8-bit)(h264/h265/mjpeg)</option>
+                    <option value="yuv422p">yuv422p (8-bit)(h264/h265/vp9/jpeg2000/theora/huffyuv)</option>
+                    <option value="yuvj422p">yuvj422p (8-bit)(h264/h265/mjpeg)</option>
+                    <option value="yuv440p">yuv440p (8-bit)(vp9)</option>
+                    <option value="yuv444p">yuv444p (8-bit)(h264/h265/vp9/jpeg2000/theora)</option>
+                    <option value="yuvj444p">yuvj444p (8-bit)(h264/h265/mjpeg)</option>
+                    <option value="gbrp">gbrp (h265/vp9)</option>
+                    <option value="nv12">nv12 (h264)</option>
+                    <option value="nv16">nv16 (h264)</option>
+                    <option value="nv21">nv21 (h264)</option>
+                    <option value="yuv420p10le">yuv420p10le (10-bit)(h264/h265/vp9)</option>
+                    <option value="yuv422p10le">yuv422p10le (10-bit)(h264/h265/prores/vp9)</option>
+                    <option value="yuv440p10le">yuv422p10le (10-bit)(vp9)</option>
+                    <option value="yuv444p10le">yuv444p10le (10-bit)(h264/h265/prores/vp9)</option>
+                    <option value="yuva444p10le">yuva444p10le (10-bit)(prores)</option>
+                    <option value="nv20le">nv20le (h264)</option>
+                    <option value="gbrp10le">gbrp10le (h265)</option>
+                    <option value="yuv420p12le">yuv420p12le (12-bit)(h265)</option>
+                    <option value="yuv422p12le">yuv422p12le (12-bit)(h265/vp9)</option>
+                    <option value="yuv440p12le">yuv440p12le (12-bit)(vp9)</option>
+                    <option value="yuv444p12le">yuv444p12le (12-bit)(h265/vp9)</option>
+                    <option value="gbrp12le">gbrp12le (12-bit)(h265)</option>
+                    <option value="gray">gray (8-bit)(h265/jpeg2000)</option>
+                    <option value="gray10le">gray10le (10-bit)(h265/vp9)</option>
+                    <option value="gray12le">gray12le (12-bit)(h265/vp9)</option>
+                    <option value="rgb24">rgb24 (jpeg2000/huffyuv)</option>
+                    <option value="bgra">bgra (huffyuv)</option>
+                    <option value="pal8">pal8 (jpeg2000)</option>
+                </select> <span class="help" id="showpixfmthelp">?</span>
+            </p>
+            <p>
+                <label for="outputvideopreset">Output Video H264/H265 preset:</label>
+                <select id="outputvideopreset">
+                    <option value="ultrafast">ultrafast</option>
+                    <option value="superfast">superfast</option>
+                    <option value="veryfast">veryfast</option>
+                    <option value="faster">faster</option>
+                    <option value="fast">fast</option>
+                    <option value="medium">medium (default)</option>
+                    <option value="slow">slow</option>
+                    <option value="slower">slower</option>
+                    <option value="veryslow">veryslow</option>
+                </select> <span class="help" id="showh264h265presethelp">?</span>
+            </p>
+            <p>
+                <label for="outputvideotune">Output Video H264/H265 tune:</label>
+                <select id="outputvideotune">
+                    <option value="none">none - do not use a tune option</option>
+                    <option value="film">film – use for high quality movie content; lowers deblocking</option>
+                    <option value="animation">animation – good for cartoons; uses higher deblocking and more reference frames</option>
+                    <option value="grain">grain – preserves the grain structure in old, grainy film material</option>
+                    <option value="stillimage">stillimage – good for slideshow-like content</option>
+                    <option value="fastdecode">fastdecode – allows faster decoding by disabling certain filters </option>
+                    <option value="zerolatency">zerolatency – good for fast encoding and low-latency streaming</option>
+                </select>  <span class="help" id="showh264h265tunehelp">?</span>
+            </p>
+            <p>
+                <label for="outputvideocrf">Output Video H264/H265 CRF:</label>
+                <input id="outputvideocrf" type="number" value="20" min="0" max="63"> <span class="help" id="showh264h265crfhelp">?</span>
+            </p>
+            <p>
+                <label for="faststartforwebvideo">H264/H265 Faststart for web video:</label>
+                <input id="faststartforwebvideo" type="checkbox">  <span class="help" id="showh264h265faststarthelp">?</span>
+            </p>
+            <p>
+                <label for="outputvideoproresprofile">Output Video ProRes profile:</label>
+                <select id="outputvideoproresprofile">
+                    <option value="0">proxy</option>
+                    <option value="1">lt</option>
+                    <option value="2">standard</option>
+                    <option value="3">hq</option>
+                    <option value="4">4444</option>
+                    <option value="5">4444xq</option>
+                </select> <span class="help" id="showproresprofilehelp">?</span>
+            </p>
+            <p>
+                <label for="outputvideoproresqscale">Output Video ProRes Qscale:</label>
+                <input id="outputvideoproresqscale" type="number" value="0" min="0" max="32"> <span class="help" id="showproresqscalehelp">?</span>
+            </p>
+            <p>
+                <label for="outputaudiocodec">Output Audio Codec:</label>
+                <select id="outputaudiocodec">
+                    <option value="aac">AAC (Advanced Audio Coding)</option>
+                    <option value="flac">FLAC (Free Lossless Audio Codec)</option>
+                    <option value="mp2">MP2 (MPEG audio layer 2)</option>
+                    <option value="libmp3lame">MP3 (MPEG audio layer 3) (codec mp3)</option>
+                    <option value="libopencore_amrnb">OpenCORE AMR-NB (Adaptive Multi-Rate Narrow-Band) (codec amr_nb)</option>
+                    <option value="libvorbis">Vorbis</option>
+                    <option value="pcm_s16le">PCM 16LE</option>
+                    <option value="copy">Copy</option>
+                    <option value="none">no audio</option>
+                </select> <span class="help" id="showaudiocodechelp">?</span>
+            </p>
+            <p>
+                <label for="customffmpegoptions">Custom ffmpeg options:</label><span class="help" id="showcustomeffmpegoptionshelp">?</span><br>
+                <input id="customffmpegoptions">
+            </p>
+            <p>
+                <label for="hardwareacceleration">Turn on hardware acceleration</label>
+                <input id="hardwareacceleration" type="checkbox"> <span class="help" id="showhardwareaccelhelp">?</span>
+            </p>
+            <p>
+                <label for="burnintext">Burn In Text:</label><span class="help" id="showburninhelp">?</span><br>
+                <input id="burnintext">
+            </p>
+            <p>
+                <span>
+                    <label for="burnintextlocation">Text Location:</label>
+                    <select id="burnintextlocation">
+                        <option value="DC">centered</option>
+                        <option value="LR">lower right</option>
+                        <option value="LL">lower left</option>
+                        <option value="UR">upper right</option>
+                        <option value="UL">upper left</option>
+                    </select>
+                </span>
+                <span class="padleftspan">
+                    <label for="burnintextsize">Text Size:</label>
+                    <input id="burnintextsize" type="number" min="5" max="200" value="30">
+                </span>
+                <span class="padleftspan">
+                    <label for="burnintextcolor">Text Color: (and Opacity)</label>
+                    <input id="burnintextcolor" type="text" value="#00BC1CFF" data-jscolor="{}">
+                </span>
+                <span class="padleftspan">
+                    <label for="burnintextborder">Text Border:</label>
+                    <input id="burnintextborder" type="number" min="0" max="20" value="0">
+                </span>
+                <span class="padleftspan">
+                    <label for="burnintextbordercolor">Text Border Color:</label>
+                    <input id="burnintextbordercolor" type="text" value="#DBDBDBFF" data-jscolor="{}">
+                </span>
+           </p>
+            <p>
+                <span>
+                    <label for="burnintimecode">Burn In Timecode:</label>
+                    <input id="burnintimecode" type="checkbox">
+                </span>
+                <span class="padleftspan">
+                    <label for="burnintimecodelocation">Timecode Location:</label>
+                    <select id="burnintimecodelocation">
+                        <option value="LR">lower right</option>
+                        <option value="LL">lower left</option>
+                        <option value="UR">upper right</option>
+                        <option value="UL">upper left</option>
+                        <option value="DC">centered</option>
+                    </select>
+                </span>
+                <span class="padleftspan">
+                    <label for="burnintimecodesize">Timecode Size:</label>
+                    <input id="burnintimecodesize" type="number" min="5" max="200" value="30">
+                </span>
+                <span class="padleftspan">
+                    <label for="burnintimecodecolor">Timecode Color:</label>
+                    <input id="burnintimecodecolor" type="text" value="#FFAC05FF" data-jscolor="{}">
+                </span>
+                <span class="padleftspan">
+                    <label for="burnintimecodeborder">Timecode Border:</label>
+                    <input id="burnintimecodeborder" type="number" min="0" max="20" value="0">
+                </span>
+                <span class="padleftspan">
+                    <label for="burnintimecodebordercolor">Timecode Border Color:</label>
+                    <input id="burnintimecodebordercolor" type="text" value="#DBDBDBFF" data-jscolor="{}">
+                </span>
+            </p>
+        </div>
+
+    <p>
+        <label for="proxyjobprogress">Progress: <span id="quelength"></span></label>
+        <progress id="proxyjobprogress" max="100" value="0"></progress>
+        <div>ffmpeg stats: <span id="fpsprogress"></span></div>
+    </p>
+    <p>
+        <label for="activitylog">Activity Log:</label>
+        <div id="activitylog"></div>
+    </p>
+
+    <div class="helpbox" id="abouthelp" style="display:none;">
+        <div class="helpboxcloser">☒</div>
+        <div class="helpboxcontent">
+            <h1>About:</h1>
+            <p>This program, like many others, is only a wrapper around FFMPEG which does all the heavy lifting. If you have questions about FFMPEG then google your life away on the subject. </p>
+            <p>I wrote this program over the space of a month while I was in the Jungle in Columbia South America acting in a movie. I had lots of time on my hands in the hotel and had only brought my old slow MacBookPro which was far too slow to edit some of the HD footage I was shooting on my own as a way to both kill time and help explore my character's backstory.</p>
+            <p>The initial program was just a static Perl script that I would run on the command line to batch convert all the 1920x1080p and 1920x810p stuff down to 640x360.</p>
+            <p>I make no claims that this program is perfect or even very good. If it helps you then great. If it does not then well you get what you pay for.</p>
+            <p>Happy converting...</p>
+            <p>-Raymond Steers</p>
+            <h1>Version Changes:</h1>
+            <ul>
+                <li>1.1.0 from 1.0.0 </li>
+                    <ul>(based on feedback from Jonas Talkington)
+                        <li>When going NOT in fullscreen,  the little help notes do not scroll, and they are cut off on the bottom</li>
+                            <ul>
+                                <li>Fixed by adding scrolling to the help container class.</li>
+                            </ul>
+                        <li>sometimes I might want to make a proxy of a single file, or a few selections, rather than the whole folder... just picking 2 or 3 out of the mess</li>
+                            <ul>
+                                <li>This is going to take some time.</li>
+                            </ul>
+                        <li>cannot copy paste into the input directory box</li>
+                            <ul>
+                                <li>Electron has copy and paste off by default when you remove the binding to the edit menu. Fixed by adding the edit menu options back.</li>
+                                <li>Fixed also the by removing the readonly attribute of the input fields</li>
+                                <li>Also had to add a new button called Scan which is different from the choose button so that you can edit the box and then scan.</li>
+                            </ul>
+                        <li>Gallery page works fine. Again, a little disconcerting, but not a dealbreaker, (though usability level difference) is that when you play one file, if you play another, the first one keeps playing.</li>
+                        <li>the input and output directory lines are very long, the width and height could be next to each other, and the 3 choices could as well, rather than all in a line straight down, show advanced could be nex to start making proxies.</li>
+                            <ul>
+                                <li>The input and output file path lines are long for a reason and I've decided to keep them that way as I like knowing the full path.</li>
+                                <li>Fixed output width and height to be on one line and changed the word "pixels" to "px".</li>
+                                <li>Fixed the next 3 checkboxes to be on one line.</li>
+                            </ul>
+                        <li>Make the HTML video gallery file created at: C:/Users/cinej/Desktop/tryme/gallery.html sentence actually a link to open in the default system browser.</li>
+                            <ul>
+                                <li>Fixed by adding a little open button that opens the file in the local default browser. tested in Mac and Windows.</li>
+                            </ul>
+                        <li>the ability to save input/output folders through different runs might be useful for some.</li>
+                            <ul>
+                                <li>Fixed by adding a way to store the history into the settings.</li>
+                                <li>Also had to add dropdown icon buttons to the left of the path fields to pup up that history and then allow them to be choosable.</li>
+                            </ul>
+                        <li>Make it NOT black black, it looks very stark. actually a bit hard on the eyes, dark grey and very light grey, much easier to read.</li>
+                            <ul>
+                                <li>Fixed by changing BG and FG colors, black to #404040 and white to #d8d8d8.</li>
+                                <li>Fixed by changing BG color of advanced box from #464646 to #636363.</li>
+                                <li>Also decreased alpha opacity from 0.85 to 0.65 of help box modal background so you can see the main program underneath a little more.</li>
+                            </ul>
+                        <li>When I uncheck the only go one level deep box on the input and give it a dir with lots of stuff that there is a long lag before it starts giving feedback about the input process adding to the que.</li>
+                            <ul>
+                                <li>Fixed by adding a message to the log telling you it has started and please wait and also making log messages easier to read colorwise.</li>
+                            </ul>
+                        <li>Need to be able to pause/resume/stop conversion jobs.</li>
+                            <ul>
+                                <li>Fixed by adding buttons and functions for that.</li>
+                            </ul>
+                        <li>Would be great to have timecode and text watermarking.</li>
+                            <ul>
+                                <li>Fixed by adding functions for that.</li>
+                            </ul>
+                    </ul>
+                <li>1.0.0</li>
+                    <ul>
+                        <li>Initial features and design set by Raymond Steers.</li>
+                    </ul>
+            </ul>
+        </div>
+    </div>
+    <div class="helpbox" id="outputfpshelp" style="display:none;">
+        <div class="helpboxcloser">☒</div>
+        <div class="helpboxcontent">
+            <h1>Output FPS Help:</h1>
+            <p>Leaving this box empty means that each output file will be created with the same frame rate as it's source file.</p>
+            <p>Putting a number in this box like 24 or 23.976 will force ALL files to be converted to that framerate. </p>
+            <p>The duration of the output video will remain the same no matter what the framerate change is (hopefully).</p>
+        </div>
+    </div>
+    <div class="helpbox" id="onlyoneinputleveldeephelp" style="display:none;">
+        <div class="helpboxcloser">☒</div>
+        <div class="helpboxcontent">
+            <h1>Only Go One Input Level Deep Help:</h1>
+            <p>UN-CHECKING this box means that the program will dig down infinite levels into the sub directories (folders) of the chosen input directory (folder) and find ALL video files.</p>
+            <p>It is a <b>BAD IDEA</b> to uncheck this <b>IF</b> you set your output directory as a sub-directory of the input directory, as when you run it a second time you will eat a hole in the fabric of spacetime. You have been warned. </p>
+            <p>Because of the danger of this, we will ALWAYS reset this box to CHECKED and not save it's UN-CHECKED state.</p>
+        </div>
+    </div>
+    <div class="helpbox" id="appendtoqueuehelp" style="display:none;">
+        <div class="helpboxcloser">☒</div>
+        <div class="helpboxcontent">
+            <h1>Append Files to Queue Help:</h1>
+            <p>Checking this will add all the files you find each time you click the 'SCAN' button to the processing queue. NOT checking this box (default) will empty the queue before each click of the 'SCAN' button.</p>
+        </div>
+    </div>
+    <div class="helpbox" id="onlymakenewfileshelp" style="display:none;">
+        <div class="helpboxcloser">☒</div>
+        <div class="helpboxcontent">
+            <h1>Only Make New Files Help:</h1>
+            <p>If for example, you are using this program nightly during a multi-day shoot and want to copy new files off your camera cards into the same source folder, having this box checked makes sure you don't re-convert files from previous days and waste time. It really just adds or removes the ffmpeg option to allow overwriting of files.</p>
+        </div>
+    </div>
+    <div class="helpbox" id="autocrophelp" style="display:none;">
+        <div class="helpboxcloser">☒</div>
+        <div class="helpboxcontent">
+            <h1>Auto Crop Help:</h1>
+            <p>Cropping is done BEFORE scaling.</p>
+            <p>First we compare the output aspect ratio to the input aspect ratio if they are the same then there is nothing to do cropwise.</p>
+            <p>I think anything less than a 1.5% aspect ratio change is unnoticable and not worth fucking around with, in which case we ignore the cropping that would be asked for by the autocrop feature on.</p>
+            <p>Then we need to apply the aspect ratio of the output to the input in both directions W or H as more important.</p>
+            <p>If the output aspect ratio is greater than the input aspect ratio then we need to crop top and bottom (crop height).</p>
+            <p>If the output aspect ratio is less than the input aspect ratio then we need to crop left and right (crop width).</p>
+            <p>We do NOT pad with black in either direction as that's really just a waste of data and all video players can do that on the fly in full screen anyway.</p>
+            <p>Obviously cropping is done symmetrically.</p>
+        </div>
+    </div>
+    <div class="helpbox" id="createhtmlgalleryhelp" style="display:none;">
+        <div class="helpboxcloser">☒</div>
+        <div class="helpboxcontent">
+            <h1>Create HTML Gallery Help:</h1>
+            <p>Checking this box will create a file in the output directory called 'gallery.html' which you can then just double click on and open it in a browser. This will allow you to see a usable gallery of all the proxies made and play them. It will be overwritten on each run.</p>
+        </div>
+    </div>
+    <div class="helpbox" id="filecontainerhelp" style="display:none;">
+        <div class="helpboxcloser">☒</div>
+        <div class="helpboxcontent">
+            <h1>File Container Help:</h1>
+            <p>A file container is just a spec about how to hold audio and video and metadata streams.</p>
+        </div>
+    </div>
+    <div class="helpbox" id="videocodechelp" style="display:none;">
+        <div class="helpboxcloser">☒</div>
+        <div class="helpboxcontent">
+            <h1>Video Codec Help:</h1>
+            <p>Well....what to say here? The rabbit hole of video codecs might start here: https://ffmpeg.org/ffmpeg-codecs.html (paste that in your browser and have fun reading)</p>
+
+            <p>What's interesting is that the definition of "codec" is: "Codecs are compression technologies and have two components, an encoder to compress the files, and a decoder to decompress."</p>
+            <p>However... that's kind of bullshit. "Codecs" sadly do NOT compress data. They throw out data they believe you won't notice or care about as much. Now, something like ZIP, actually compresses data, because when you uncompress it the resulting data is identical to the original. Video and Audio Codecs with few exceptions do nothing of the kind. A MUCH MUCH better term would be perhaps "Decimator" and if we used proper nomenclature in the media then we would not be shocked when video looks like total garbage when "over-compressed" because we would call it "over-decimated".</p>
+        </div>
+    </div>
+    <div class="helpbox" id="pixelformathelp" style="display:none;">
+        <div class="helpboxcloser">☒</div>
+        <div class="helpboxcontent">
+            <h1>Pixel Format Help:</h1>
+            <p>Videos, images and other visual media contain a value called Pixel Format. It describes the layout of each and every pixel in the image data of a picture or video.
+
+            The Pixel Format is related to the color channel or color space of the visual data. It describes how the color data is encoded and organized. Usually, the value given for the Pixel Format in a file includes the bits per pixel (bpp) and the color channel or model. This includes, among others:
+
+                YCbCr
+                RGB
+                YUVJ
+            </p>
+            <p>What you need to know here is that on this drop down list the pixel formats shown also have in parenthesis next to them a list of what video codesc they are compatabile with. So... DON'T choose a pixel format that is incompatible with the video codec you have chosen.</p>
+        </div>
+    </div>
+    <div class="helpbox" id="h264h265presethelp" style="display:none;">
+        <div class="helpboxcloser">☒</div>
+        <div class="helpboxcontent">
+            <h1>h264/h265 Preset Help:</h1>
+            <p> A preset is a collection of options that will provide a certain encoding speed to compression ratio. A slower preset will provide better compression (compression is quality per filesize). This means that, for example, if you target a certain file size or constant bit rate, you will achieve better quality with a slower preset. Similarly, for constant quality encoding, you will simply save bitrate by choosing a slower preset.</p>
+
+            <p>Use the slowest preset that you have patience for. The available presets in descending order of speed are:</p>
+            <p>
+            <ul>
+                <li>ultrafast</li>
+                <li>superfast</li>
+                <li>veryfast</li>
+                <li>faster</li>
+                <li>fast</li>
+                <li>medium</li>
+                <li>slow</li>
+                <li>slower</li>
+                <li>veryslow</li>
+            </ul>
+            </p>
+        </div>
+    </div>
+    <div class="helpbox" id="h264h265tunehelp" style="display:none;">
+        <div class="helpboxcloser">☒</div>
+        <div class="helpboxcontent">
+            <h1>h264/h265 Tune Help:</h1>
+            <p> You can optionally use -tune to change settings based upon the specifics of your input. Current tunings include:</p>
+            <p>
+            <ul>
+                <li>film – use for high quality movie content; lowers deblocking</li>
+                <li>animation – good for cartoons; uses higher deblocking and more reference frames</li>
+                <li>grain – preserves the grain structure in old, grainy film material</li>
+                <li>stillimage – good for slideshow-like content</li>
+                <li>fastdecode – allows faster decoding by disabling certain filters</li>
+                <li>zerolatency – good for fast encoding and low-latency streaming</li>
+            </ul>
+            </p>
+
+            <p>For example, if your input is animation then use the animation tuning, or if you want to preserve grain in a film then use the grain tuning. If you are unsure of what to use or your input does not match any of tunings then omit the -tune option.</p>
+        </div>
+    </div>
+    <div class="helpbox" id="h264h265crfhelp" style="display:none;">
+        <div class="helpboxcloser">☒</div>
+        <div class="helpboxcontent">
+            <h1>h264/h265 CRF Help:</h1>
+            <p>The range of the CRF scale is 0–51, where 0 is lossless, 23 is the default, and 51 is worst quality possible. A lower value generally leads to higher quality, and a subjectively sane range is 17–28. Consider 17 or 18 to be visually lossless or nearly so; it should look the same or nearly the same as the input but it isn't technically lossless.</p>
+
+            <p>The range is exponential, so increasing the CRF value +6 results in roughly half the bitrate / file size, while -6 leads to roughly twice the bitrate.</p>
+
+            <p>Choose the highest CRF value that still provides an acceptable quality. If the output looks good, then try a higher value. If it looks bad, choose a lower value.</p>
+
+            <p>Note: The 0–51 CRF quantizer scale mentioned on this page only applies to 8-bit x264. When compiled with 10-bit support, x264's quantizer scale is 0–63. You can see what you are using by referring to the ffmpeg console output during encoding (yuv420p or similar for 8-bit, and yuv420p10le or similar for 10-bit). 8-bit is more common among distributors.</p>
+        </div>
+    </div>
+    <div class="helpbox" id="h264h265faststarthelp" style="display:none;">
+        <div class="helpboxcloser">☒</div>
+        <div class="helpboxcontent">
+            <h1>h264/h265 Faststart Help:</h1>
+            <p>You can add -movflags +faststart as an output option if your videos are going to be viewed in a browser. This will move some information to the beginning of your file and allow the video to begin playing before it is completely downloaded by the viewer. It is not required if you are going to use a video service such as YouTube. YouTube ​recommends using faststart, so they can begin re-encoding before uploads complete. </p>
+        </div>
+    </div>
+    <div class="helpbox" id="proresprofilehelp" style="display:none;">
+        <div class="helpboxcloser">☒</div>
+        <div class="helpboxcontent">
+            <h1>Prores Profile Help:</h1>
+            <p>There are 4 profiles that exist within Prores: Proxy, LT, SQ ,,HQ, 4444, 4444xq. In ffmpeg these profiles are assigned numbers (0 is Proxy and 5 is 4444xq). See Apple's official Prores whitepaper for details on the codec and information associated with the profiles. For quick reference, the basic difference is the bitrates: (TODO). The other option that is used with prores is the -pix_fmt option. This is normally set to yuv422p10le or something like that, but if you want to use the 4444 prores you would set it to yuva444p10le. (A list of possible pixel formats can be invoked by running ffmpeg -pix_fmts. Note that not all of these formats are actually supported with prores). </p>
+        </div>
+    </div>
+    <div class="helpbox" id="proresqscalehelp" style="display:none;">
+        <div class="helpboxcloser">☒</div>
+        <div class="helpboxcontent">
+            <h1>Prores QScale Help:</h1>
+            <p>This parameter determines the quality of the resulting prores movie - both the resulting size and bitrate. 0 means best and it goes up to 32 which is worst. From empirical testing we've found that a qscale of 9 - 13 gives a good result without exploding the space needed too much. 11 would be a good bet, 9 if a slightly better quality is required. When space is not a problem, go with qscale 5 or less, but approaching zero the resulting clip will be extremely large and the bitrate will be so high that it will stop being playable on normal equipment. The "vendor" argument when set to "apl0" tricks quicktime and Final Cut Pro into thinking that the movie was generated on using a quicktime prores encoder. </p>
+        </div>
+    </div>
+    <div class="helpbox" id="audiocodechelp" style="display:none;">
+        <div class="helpboxcloser">☒</div>
+        <div class="helpboxcontent">
+            <h1>Audio Codec Help:</h1>
+            <p>Go here and read this: https://trac.ffmpeg.org/wiki/Encode/HighQualityAudio</p>
+        </div>
+    </div>
+    <div class="helpbox" id="customffmpegoptionshelp" style="display:none;">
+        <div class="helpboxcloser">☒</div>
+        <div class="helpboxcontent">
+            <h1>Custom FFMpeg Options Help:</h1>
+            <p>Anything you put in this box will get added to the ffmpeg command line options AFTER everything else and BEFORE the output filename. </p>
+            <p>IMPORTANT: because of the way we send parameters to ffmpeg you MUST put a vertical pipe character between all options. For example: </p>
+            <p>-tune|grain</p>
+            <p>The easy thing you can add here is just:</p>
+            <p>-report</p>
+            <p>Which creates a detailed report about what ffmpeg did for each file. Those files will have names like 'ffmpeg-20220120-131556.log'. You'll have to look for them in the directory of this application. IF you are having problems with ffmpeg throwing errors and not making your output files then sending me one of these log files would be the first step in troubleshooting.</p>
+            <p>Fuck with this at your own risk.</p>
+        </div>
+    </div>
+    <div class="helpbox" id="hardwareaccelhelp" style="display:none;">
+        <div class="helpboxcloser">☒</div>
+        <div class="helpboxcontent">
+            <h1>Hardware Acceleration Help:</h1>
+            <p>Internal hwaccel decoders are enabled via the -hwaccel option. The software decoder starts normally, but if it detects a stream which is decodable in hardware then it will attempt to delegate all significant processing to that hardware. If the stream is not decodable in hardware (for example, it is an unsupported codec or profile) then it will still be decoded in software automatically. </p>
+        </div>
+    </div>
+    <div class="helpbox" id="burninhelp" style="display:none;">
+        <div class="helpboxcloser">☒</div>
+        <div class="helpboxcontent">
+            <h1>Burn In Help:</h1>
+            <p>You have 2 items that can be burned into the output video. They can be used individually or together. Putting text into the 'Burn In Text' field will activate that feature. Checking the 'Burn In Timecode' box will activate that feature. </p>
+            <p>Keep in mind that you should make a test with a single short video to make sure that the result looks good before you unleash it on a bunch of videos and waste a lot of time creating bad results.</p>
+            <p>You can set the location, color, size, and border, of each item.</p>
+            <p>When setting the color, you will find a color picker will pop up when you click on the little color squares and you can not only change the color but also the opacity (alpha). This is helpful if you want to make watermarks.</p>
+            <p>The system makes no attempt to stop you from putting more text in the box than will show up on the screen. In other words your text can easily run off the screen if you have too many characters and too big a font size.</p>
+            <p>UNDERSTAND...timecode is far more tricky than it seems. The time code is not written into the frame metadata perfectly. In fact there is not a single standard on how this is done from codec to codec and container to container. To simplify, per frame timecode generally starts from zero '00:00:00.000' and IF there is a creation date/time stamp in the overall file metadata THEN this is added as an offest to the frames.</p>
+            <p>So, for example, consider the following metadata taken from a MP4 file shot on my Samsung NX300:</p>
+            <p><pre>
+here is the header:
+Input #0, mov,mp4,m4a,3gp,3g2,mj2, from '/Volumes/BLUE_1T_USB/backupcopyofcolombiatrip/SnakeOil/vidsrc/aloeplantinpotchinosfrontdoor.MP4':
+  Metadata:
+    major_brand     : mp42
+    minor_version   : 0
+    compatible_brands: mp42isomavc1
+    creation_time   : 2021-06-15T12:10:18.000000Z
+  Duration: 00:00:23.00, start: 0.000000, bitrate: 13345 kb/s
+    Stream #0:0(eng): Audio: aac (LC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 189 kb/s (default)
+    Metadata:
+      creation_time   : 2021-06-15T12:10:18.000000Z
+      handler_name    : SoundHandler
+    Stream #0:1(eng): Video: h264 (Baseline) (avc1 / 0x31637661), yuv420p, 1920x1080, 13150 kb/s, 25 fps, 25 tbr, 60k tbn, 120k tbc (default)
+    Metadata:
+      creation_time   : 2021-06-15T12:10:18.000000Z
+      handler_name    : VideoHandler
+      encoder         : DRIMeIV MFC Encoder
+
+here is frame metadata:
+[FRAME]
+media_type=video
+stream_index=1
+key_frame=0
+pkt_pts=1377600
+pkt_pts_time=22.960000
+pkt_dts=1377600
+pkt_dts_time=22.960000
+best_effort_timestamp=1377600
+best_effort_timestamp_time=22.960000
+pkt_duration=2400
+pkt_duration_time=0.040000
+pkt_pos=38293695
+pkt_size=60098
+width=1920
+height=1080
+pix_fmt=yuv420p
+sample_aspect_ratio=N/A
+pict_type=P
+coded_picture_number=574
+display_picture_number=0
+interlaced_frame=0
+top_field_first=0
+repeat_pict=0
+color_range=unknown
+color_space=unknown
+color_primaries=unknown
+color_transfer=unknown
+chroma_location=left
+[/FRAME]
+
+And here is an ARRI prores file:
+
+[mxf @ 0x7fc1f9804400] Estimating duration from bitrate, this may be inaccurate
+Input #0, mxf, from '/Users/rsteers/Downloads/ARRIRAW_Converter_CMD_4.2.3.0_CPU_and_GPU_OS_X_10.13/F003C002_190925_MN99.mxf':
+  Metadata:
+    product_uid     : 414c4558-4120-4d69-6e69-204c46000000
+    uid             : 41374337-3033-1337-3131-2d444637412d
+    generation_uid  : 41374337-3033-1338-3131-2d444637412d
+    company_name    : ARRI
+    product_name    : ALEXA Mini LF
+    product_version : SUP 6.00.15
+    modification_date: 2019-09-25T09:56:02.000000Z
+    material_package_umid: 0x060A2B340101010501010D431300000041374337303343302D444637412D3131
+    timecode        : 00:38:16:12
+  Duration: 00:08:31.75, start: 0.000000, bitrate: 5774 kb/s
+    Stream #0:0: Video: prores, yuv444p10le(progressive), 1920x1080, SAR 1:1 DAR 16:9, 24 tbr, 24 tbn, 24 tbc
+    Metadata:
+      file_package_umid: 0x060A2B340101010501010D431300000042374337303343302D444637412D3131
+    Stream #0:1: Audio: pcm_s24le, 48000 Hz, 1 channels, s32 (24 bit), 1152 kb/s
+    Metadata:
+      file_package_umid: 0x060A2B340101010501010D431300000042374337303343302D444637412D3131
+    Stream #0:2: Audio: pcm_s24le, 48000 Hz, 1 channels, s32 (24 bit), 1152 kb/s
+    Metadata:
+      file_package_umid: 0x060A2B340101010501010D431300000042374337303343302D444637412D3131
+    Stream #0:3: Audio: pcm_s24le, 48000 Hz, 1 channels, s32 (24 bit), 1152 kb/s
+    Metadata:
+      file_package_umid: 0x060A2B340101010501010D431300000042374337303343302D444637412D3131
+    Stream #0:4: Audio: pcm_s24le, 48000 Hz, 1 channels, s32 (24 bit), 1152 kb/s
+    Metadata:
+      file_package_umid: 0x060A2B340101010501010D431300000042374337303343302D444637412D3131
+    Stream #0:5: Audio: pcm_s24le, 48000 Hz, 1 channels, s32 (24 bit), 1152 kb/s
+    Metadata:
+      file_package_umid: 0x060A2B340101010501010D431300000042374337303343302D444637412D3131
+
+and a video frame:
+[FRAME]
+media_type=video
+stream_index=0
+key_frame=1
+pkt_pts=42
+pkt_pts_time=1.750000
+pkt_dts=42
+pkt_dts_time=1.750000
+best_effort_timestamp=42
+best_effort_timestamp_time=1.750000
+pkt_duration=1
+pkt_duration_time=0.041667
+pkt_pos=56967147
+pkt_size=1298247
+width=1920
+height=1080
+pix_fmt=yuv444p10le
+sample_aspect_ratio=1:1
+pict_type=I
+coded_picture_number=0
+display_picture_number=0
+interlaced_frame=0
+top_field_first=0
+repeat_pict=0
+color_range=unknown
+color_space=unknown
+color_primaries=unknown
+color_transfer=unknown
+chroma_location=unspecified
+[/FRAME]
+
+            </pre></p>
+            <p>As you can see one file uses 'modification_date' and one file uses 'creation_time' and I have found other files that use 'CREATION_TIME' and then many others that have NO creation datetimestamp at all.</p>
+            <p>So we search for a datetimestamp of some kind and then do some ugly calc to create the right offset for the best_effort_timestamp_time in each frame. THAT is your timecode. So, IF your file has no datetimestamp, THEN you will NOT see a date to the left of the timecode and the timecode will always start at zero. IF there is a datetimestamp then as long as the camera had the correct time set then you should see the actual date and time that each frame was captured.</p>
+            <p>HOWEVER... you will be seeing the local time. So if your camera is in one time zone and they start shooting at 3am then you will see timecode that says 3am, no matter if you are in a different time zone or not.</p>
+            <p>The 'Border' fields are set to zero by default and they mean pixels of thickness of how much outline (stroke) the text gets. Leaving them at 0 makes no stroke effect. </p>
+        </div>
+    </div>
+    <script src="./jscolor.js"></script>
+    <script src="./renderer.js"></script>
+  </body>
+</html>
