@@ -5,6 +5,7 @@ Designed for DIY filmmakers and video content creators. Especially useful for sh
 
 ## Features:
 - Video and audio codec conversion
+- File container format conversion (multiple file extensions)
 - Resolution conversion
 - Auto-cropping and scaling
 - Frame rate conversion
@@ -15,6 +16,10 @@ Designed for DIY filmmakers and video content creators. Especially useful for sh
 - Adding of entire directories or individual files to the input processing queue
 - Detection of creation date via video metadata for use in correct timecode offsets.
 - HTML video gallery files
+- Ability to insert custom ffmpeg options
+- Input and output directory history
+- Ability to scan multiple levels deep into the input directory searching for nested video files
+- Ability to only create new files or overwrite existing output files
 
 ## With What:
 The application is written in [Electron](https://www.electronjs.org/) and uses [electron-builder](https://github.com/electron-userland/electron-builder) to build installables for both Mac and Windows. All the heavy lifting for videoprocessing is done by [FFMPEG](https://ffmpeg.org/) and initial scanning of video files done by [FFPROBE](https://ffmpeg.org/ffprobe.html)
