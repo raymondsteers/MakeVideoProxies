@@ -53,3 +53,9 @@ in main.js:
   - upload of galleries to online sharing services like gdrive, wetransfer, dropbox, etc.
   - html gallery consumer input and feedback of which videos are good / bad / ugly / keepers, etc.
 
+## Documentation, Installer Downloads, and Instructional Videos
+  - Goto [RayTalk.Works](http://raytalk.works/Make-Video-Proxies.html) for everything including contact info OR:
+  - Direct link to YouTube Video [MakeVideoProxies v1.1.0 walk through](https://www.youtube.com/watch?v=s4s64MbjviQ)
+  - Download latest version 1.1.0 Mac [DMG](https://github.com/raymondsteers/MakeVideoProxies/releases/download/v1.1.0/RayTalkWorksMakeVideoProxies-1.1.0.dmg) from Github
+  - Download latest version 1.1.0 Windows Setup [EXE](https://github.com/raymondsteers/MakeVideoProxies/releases/download/v1.1.0/RayTalkWorksMakeVideoProxiesSetup1.1.0.exe) from Github
+
