@@ -1,7 +1,7 @@
 {
   "name": "RayTalkWorksMakeVideoProxies",
-  "productName": "RayTalkWorks MakeVideoProxies",
-  "version": "1.1.0",
+  "productName": "RayTalkWorksMakeVideoProxies",
+  "version": "2.0.1",
   "description": "A cross platform app for making video proxies",
   "main": "main.js",
   "scripts": {
@@ -31,9 +31,10 @@
   },
   "dependencies": {
     "cross-spawn": "^7.0.3",
+    "electron-window-state": "^5.0.3",
     "ffmpeg-static": "^4.4.1",
     "ffprobe-static": "^3.0.0",
-    "filehound": "^1.17.5",
-    "ntsuspend": "^1.0.2"
+    "ntsuspend": "^1.0.2",
+    "uuid": "^8.3.2"
   }
 }

@@ -5,6 +5,10 @@ html{
     font-family: arial;
     color: #d8d8d8;
 }
+body{
+    margin:0;
+    padding:8px;
+}
 .buttons{
     border:2px solid #aaaaaa;
     border-radius:20px;
@@ -12,6 +16,14 @@ html{
     cursor: pointer;
     margin: 5px;
     padding: 5px 15px 5px 15px;
+}
+.smallbuttons{
+    border:2px solid #aaaaaa;
+    border-radius:50px;
+    background-color: #a2a2a2;
+    cursor: pointer;
+    margin: 5px;
+    padding: 5px 5px 5px 5px;
 }
 h1{
     text-align:center;
@@ -27,6 +39,7 @@ h1{
 }
 label{
     display:inline;
+    user-select: none;
 }
 input{
     display:inline;
@@ -37,7 +50,7 @@ input{
 #outputdir{
     width:70%;
 }
-#customffmpegoptions,#burnintext{
+#customffmpegoptions{
     width:100%;
 }
 #proxyjobprogress{
@@ -66,6 +79,11 @@ input{
 .activitylogitemsalreadyexists{
     color:#FFB200;
 }
+.activitylogtime{
+    color:#1E90FF;
+    font-size:.7rem;
+    margin-right:1rem;
+}
 #startmakingproxies,#scaninputdir{
     background-color:#1D61F4;
 }
@@ -78,6 +96,7 @@ input{
     padding: 1em;
     margin: 1em;
     border-radius: 1em;
+    border: 1px solid #929292;
 }
 .help{
     cursor:pointer;
@@ -106,11 +125,6 @@ input{
     border-radius: 1em;
     padding: 1em;
 }
-#showabouthelp{
-    position: fixed;
-    right: 10px;
-    top: 10px;
-}
 datalist {
     position: absolute;
     background-color: #b9b4b4;
@@ -129,13 +143,139 @@ option {
     margin-left: 10px;
     font-size: 1.2em;
     vertical-align: middle;
-}
-.opengalleryfile{
-    margin-left: .5em;
+    cursor: pointer;
 }
 #burnintimecodecolor,#burnintextcolor,#burnintimecodebordercolor,#burnintextbordercolor{
     width: 6em;
 }
 #pauseproxyjob,#killproxyjob{
     background-color: #a27116;
+}
+#burnintext{
+    font-size:30px;
+    width:640px;
+    height:360px;
+    overflow-wrap: unset;
+    padding: 3px;
+    overflow:hidden;
+    border: 1px solid white;
+    align-items: center;
+    justify-content:center;
+    white-space:nowrap;
+    display:flex;
+    flex-flow:column;
+    background: linear-gradient(90deg, rgb(108 105 150) 0%, rgba(117,117,222,1) 47%, rgba(0,212,255,1) 100%);
+    transform: scale(1);
+    transform-origin: left top;
+    line-height: .9em;
+}
+#burnintextpreviewshrink100{
+    background-color:#e6a731;
+}
+.leafname,.lenstype{
+    color:#EFBE38
+}
+.format_long_name,.reel{
+    color:#CF49AE;
+}
+.size,.scene{
+    color:#AB7EE5;
+}
+.rez,.take{
+    color:#84A6F2;
+}
+.fps,.wb{
+    color:#5CD2C0;
+}
+.duration,.exposure{
+    color:#67C774;
+}
+.creationdate{
+    color:#E17D8B;
+}
+.cameraindex,.cameramodel{
+    color:#C3CB43;
+}
+#htmlgalleryfilename{
+    width:20em;
+}
+#tabheaders{
+    font-size: 1.5em;
+    user-select: none;
+}
+.tabhead{
+    display:inline-block;
+    border-top-left-radius:     1em;
+    border-top-right-radius:    1em;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius:  0;
+    background-color: #57575d;
+    padding: .5em;
+    cursor:pointer;
+}
+#proxytabhead{
+
+}
+#abouttabhead{
+    background-color: #737373;
+}
+#settingstabhead{
+    background-color: #8a8a8a;
+}
+#proxytab{
+    border-top-left-radius: 0;
+    border-top-right-radius: 1em;
+    border-bottom-right-radius: 1em;
+    border-bottom-left-radius: 1em;
+    padding: .5em;
+    background-color: #57575d;
+}
+#abouttab{
+    border-top-left-radius: 0;
+    border-top-right-radius: 1em;
+    border-bottom-right-radius: 1em;
+    border-bottom-left-radius: 1em;
+    padding: 1em;
+    background-color: #737373;
+}
+#settingstab{
+    border-top-left-radius: 0;
+    border-top-right-radius: 1em;
+    border-bottom-right-radius: 1em;
+    border-bottom-left-radius: 1em;
+    padding: 1em;
+    background-color: #8a8a8a;
+}
+#largestatus{
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #FFC800;
+    padding-top: 20vh;
+    top: 0;
+    overflow: hidden;
+    z-index: 1000;
+    animation-duration: 0.5s;
+    animation-iteration-count: infinite;
+}
+#esctip{
+    position:absolute;
+    color:#ffffff73;
+    font-size:2rem;
+    top:.5rem;
+    left:.5rem;
+}
+#largestatuscontent{
+    font-size: 50vh;
+    color: white;
+    -webkit-text-stroke: 10px black;
+    text-align: center;
+    font-family: monospace;
+    line-height: 50vh;
+}
+
+@keyframes jobcompleteflash {
+  from {background-color: #FFC800;}
+  to {background-color: #FF0062;}
 }

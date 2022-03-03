@@ -8,306 +8,555 @@
     <link rel="stylesheet" href="./renderer.css">
   </head>
   <body>
-      <span class="help" id="showabouthelp">about</span>
-    <h1>MakeVideoProxies v1.1.0</h1>
-    <p>
-        <label for="inputdir">Input Directory:<span id="showinputdirhistory">🔽</span></label>
-        <input id="inputdir" list="" autocomplete="off">
-        <datalist id="inputlist"></datalist>
-        <button class="buttons" id="chooseinputdir">Browse for Directory</button>
-        <button class="buttons" id="chooseinputfiles">Browse for Files</button>
-    </p>
-    <p>
-        <button class="buttons" id="scaninputdir">Scan</button>
-    </p>
-    <p>
-        <label for="onlyoneinputleveldeep">Only Go One Input level Deep:</label>
-        <input id="onlyoneinputleveldeep" type="checkbox" checked> <span class="help" id="showonlyoneinputleveldeephelp">?</span>
-    </p>
-    <p>
-        <label for="outputdir">Output Directory:<span id="showoutputdirhistory">🔽</span></label>
-        <input id="outputdir" list="" autocomplete="off">
-        <datalist id="outputlist"></datalist>
-        <button class="buttons" id="chooseoutputdir">Browse</button>
-    </p>
-    <p>
-        <span>
-            <label for="outputwidth">Output Width:</label>
-            <input id="outputwidth" type="number" min="10" max="100000">px
-        </span>
-        <span class="padleftspan">
-            <label for="outputheight">Output Height:</label>
-            <input id="outputheight" type="number" min="10" max="100000">px
-        </span>
-        <span class="padleftspan">
-            <label for="outputfps">Output FPS:</label>
-            <input id="outputfps" type="number" min="0" max="100000">FPS <span class="help" id="showoutputfpshelp">?</span>
-        </span>
-    </p>
-    <p>
-        <span>
-            <label for="appendtoqueue">Append Files to Queue:</label>
-            <input id="appendtoqueue" type="checkbox"> <span class="help" id="showappendtoqueuehelp">?</span>
-        </span>
-        <span class="padleftspan">
-            <label for="onlymakenew">Only Make New Files:</label>
-            <input id="onlymakenew" type="checkbox"> <span class="help" id="showonlymakenewfileshelp">?</span>
-        </span>
-        <span class="padleftspan">
-            <label for="autocrop">Auto Crop:</label>
-            <input id="autocrop" type="checkbox"> <span class="help" id="showautocrophelp">?</span>
-        </span>
-        <span class="padleftspan">
-            <label for="htmlgallery">Create HTML Gallery:</label>
-            <input id="htmlgallery" type="checkbox"> <span class="help" id="showcreatehtmlgalleryhelp">?</span>
-        </span>
-    </p>
-    <p>
-        <span>
-            <button class="buttons" id="startmakingproxies">Start Making Proxies</button>
-        </span>
-        <span class="padleftspan">
-            <button class="buttons" id="advanced">Show Advanced</button>
-        </span>
-        <span class="padleftspan">
-            <button class="buttons" id="pauseproxyjob" disabled>Pause Proxy Job</button>
-        </span>
-        <span class="padleftspan">
-            <button class="buttons" id="killproxyjob" disabled>Stop Proxy Job</button>
-        </span>
-    </p>
-        <div id="advancedsettings" style="display:none">
-            <p>
-                <label for="outputvideocontainer">Output File Container:</label>
-                <select id="outputvideocontainer">
-                    <option value="mov">.mov</option>
-                    <option value="mp4">.mp4</option>
-                    <option value="avi">.avi</option>
-                    <option value="mkv">.mkv</option>
-                    <option value="m4v">.m4v</option>
-                    <option value="gif">.gif</option>
-                    <option value="webm">.webm</option>
-                    <option value="ogv">.ogv</option>
-                    <option value="mjpeg">.mjpeg</option>
-                    <option value="3gp">.3gp</option>
-                    <option value="mpeg">.mpeg</option>
-                    <option value="mxf">.mxf</option>
-                </select> <span class="help" id="showfilecontainerhelp">?</span>
-            </p>
-            <p>
-                <label for="outputvideocodec">Output Video Codec:</label>
-                <select id="outputvideocodec">
-                    <option value="h263">H263</option>
-                    <option value="libx264">H264</option>
-                    <option value="libx264rgb">H264(rgb)</option>
-                    <option value="libx265">H265</option>
-                    <option value="dnxhd">DNxHD</option>
-                    <option value="prores_ks">Apple ProRes</option>
-                    <option value="vp9">VP9</option>
-                    <option value="jpeg2000">JPEG 2000</option>
-                    <option value="mpeg4">MPEG-4</option>
-                    <option value="mpeg1video">MPEG-1</option>
-                    <option value="libtheora">Theora (codec theora)</option>
-                    <option value="mjpeg">MJPEG (Motion JPEG)</option>
-                    <option value="huffyuv">Huffyuv / HuffYUV</option>
-                </select>  <span class="help" id="showvideocodecshelp">?</span>
-            </p>
-            <p>
-                <label for="outputvideopxlfmt">Output Video Pixel Format (bit depth):</label>
-                <select id="outputvideopxlfmt">
-                    <option value="yuv410p">yuv410p (8-bit)(jpeg2000)</option>
-                    <option value="yuv411p">yuv411p (8-bit)(jpeg2000)</option>
-                    <option value="yuv420p">yuv420p (8-bit)(h263/h264/h265/DNxHD/vp9/jpeg2000/mpeg4/mpeg1video/theora)</option>
-                    <option value="yuva420p">yuva420p (8-bit)(vp9)</option>
-                    <option value="yuvj420p">yuvj420p (8-bit)(h264/h265/mjpeg)</option>
-                    <option value="yuv422p">yuv422p (8-bit)(h264/h265/vp9/jpeg2000/theora/huffyuv)</option>
-                    <option value="yuvj422p">yuvj422p (8-bit)(h264/h265/mjpeg)</option>
-                    <option value="yuv440p">yuv440p (8-bit)(vp9)</option>
-                    <option value="yuv444p">yuv444p (8-bit)(h264/h265/vp9/jpeg2000/theora)</option>
-                    <option value="yuvj444p">yuvj444p (8-bit)(h264/h265/mjpeg)</option>
-                    <option value="gbrp">gbrp (h265/vp9)</option>
-                    <option value="nv12">nv12 (h264)</option>
-                    <option value="nv16">nv16 (h264)</option>
-                    <option value="nv21">nv21 (h264)</option>
-                    <option value="yuv420p10le">yuv420p10le (10-bit)(h264/h265/vp9)</option>
-                    <option value="yuv422p10le">yuv422p10le (10-bit)(h264/h265/prores/vp9)</option>
-                    <option value="yuv440p10le">yuv422p10le (10-bit)(vp9)</option>
-                    <option value="yuv444p10le">yuv444p10le (10-bit)(h264/h265/prores/vp9)</option>
-                    <option value="yuva444p10le">yuva444p10le (10-bit)(prores)</option>
-                    <option value="nv20le">nv20le (h264)</option>
-                    <option value="gbrp10le">gbrp10le (h265)</option>
-                    <option value="yuv420p12le">yuv420p12le (12-bit)(h265)</option>
-                    <option value="yuv422p12le">yuv422p12le (12-bit)(h265/vp9)</option>
-                    <option value="yuv440p12le">yuv440p12le (12-bit)(vp9)</option>
-                    <option value="yuv444p12le">yuv444p12le (12-bit)(h265/vp9)</option>
-                    <option value="gbrp12le">gbrp12le (12-bit)(h265)</option>
-                    <option value="gray">gray (8-bit)(h265/jpeg2000)</option>
-                    <option value="gray10le">gray10le (10-bit)(h265/vp9)</option>
-                    <option value="gray12le">gray12le (12-bit)(h265/vp9)</option>
-                    <option value="rgb24">rgb24 (jpeg2000/huffyuv)</option>
-                    <option value="bgra">bgra (huffyuv)</option>
-                    <option value="pal8">pal8 (jpeg2000)</option>
-                </select> <span class="help" id="showpixfmthelp">?</span>
-            </p>
-            <p>
-                <label for="outputvideopreset">Output Video H264/H265 preset:</label>
-                <select id="outputvideopreset">
-                    <option value="ultrafast">ultrafast</option>
-                    <option value="superfast">superfast</option>
-                    <option value="veryfast">veryfast</option>
-                    <option value="faster">faster</option>
-                    <option value="fast">fast</option>
-                    <option value="medium">medium (default)</option>
-                    <option value="slow">slow</option>
-                    <option value="slower">slower</option>
-                    <option value="veryslow">veryslow</option>
-                </select> <span class="help" id="showh264h265presethelp">?</span>
-            </p>
-            <p>
-                <label for="outputvideotune">Output Video H264/H265 tune:</label>
-                <select id="outputvideotune">
-                    <option value="none">none - do not use a tune option</option>
-                    <option value="film">film – use for high quality movie content; lowers deblocking</option>
-                    <option value="animation">animation – good for cartoons; uses higher deblocking and more reference frames</option>
-                    <option value="grain">grain – preserves the grain structure in old, grainy film material</option>
-                    <option value="stillimage">stillimage – good for slideshow-like content</option>
-                    <option value="fastdecode">fastdecode – allows faster decoding by disabling certain filters </option>
-                    <option value="zerolatency">zerolatency – good for fast encoding and low-latency streaming</option>
-                </select>  <span class="help" id="showh264h265tunehelp">?</span>
-            </p>
-            <p>
-                <label for="outputvideocrf">Output Video H264/H265 CRF:</label>
-                <input id="outputvideocrf" type="number" value="20" min="0" max="63"> <span class="help" id="showh264h265crfhelp">?</span>
-            </p>
-            <p>
-                <label for="faststartforwebvideo">H264/H265 Faststart for web video:</label>
-                <input id="faststartforwebvideo" type="checkbox">  <span class="help" id="showh264h265faststarthelp">?</span>
-            </p>
-            <p>
-                <label for="outputvideoproresprofile">Output Video ProRes profile:</label>
-                <select id="outputvideoproresprofile">
-                    <option value="0">proxy</option>
-                    <option value="1">lt</option>
-                    <option value="2">standard</option>
-                    <option value="3">hq</option>
-                    <option value="4">4444</option>
-                    <option value="5">4444xq</option>
-                </select> <span class="help" id="showproresprofilehelp">?</span>
-            </p>
-            <p>
-                <label for="outputvideoproresqscale">Output Video ProRes Qscale:</label>
-                <input id="outputvideoproresqscale" type="number" value="0" min="0" max="32"> <span class="help" id="showproresqscalehelp">?</span>
-            </p>
-            <p>
-                <label for="outputaudiocodec">Output Audio Codec:</label>
-                <select id="outputaudiocodec">
-                    <option value="aac">AAC (Advanced Audio Coding)</option>
-                    <option value="flac">FLAC (Free Lossless Audio Codec)</option>
-                    <option value="mp2">MP2 (MPEG audio layer 2)</option>
-                    <option value="libmp3lame">MP3 (MPEG audio layer 3) (codec mp3)</option>
-                    <option value="libopencore_amrnb">OpenCORE AMR-NB (Adaptive Multi-Rate Narrow-Band) (codec amr_nb)</option>
-                    <option value="libvorbis">Vorbis</option>
-                    <option value="pcm_s16le">PCM 16LE</option>
-                    <option value="copy">Copy</option>
-                    <option value="none">no audio</option>
-                </select> <span class="help" id="showaudiocodechelp">?</span>
-            </p>
-            <p>
-                <label for="customffmpegoptions">Custom ffmpeg options:</label><span class="help" id="showcustomeffmpegoptionshelp">?</span><br>
-                <input id="customffmpegoptions">
-            </p>
-            <p>
-                <label for="hardwareacceleration">Turn on hardware acceleration</label>
-                <input id="hardwareacceleration" type="checkbox"> <span class="help" id="showhardwareaccelhelp">?</span>
-            </p>
-            <p>
-                <label for="burnintext">Burn In Text:</label><span class="help" id="showburninhelp">?</span><br>
-                <input id="burnintext">
-            </p>
-            <p>
-                <span>
-                    <label for="burnintextlocation">Text Location:</label>
-                    <select id="burnintextlocation">
-                        <option value="DC">centered</option>
-                        <option value="LR">lower right</option>
-                        <option value="LL">lower left</option>
-                        <option value="UR">upper right</option>
-                        <option value="UL">upper left</option>
-                    </select>
-                </span>
-                <span class="padleftspan">
-                    <label for="burnintextsize">Text Size:</label>
-                    <input id="burnintextsize" type="number" min="5" max="200" value="30">
-                </span>
-                <span class="padleftspan">
-                    <label for="burnintextcolor">Text Color: (and Opacity)</label>
-                    <input id="burnintextcolor" type="text" value="#00BC1CFF" data-jscolor="{}">
-                </span>
-                <span class="padleftspan">
-                    <label for="burnintextborder">Text Border:</label>
-                    <input id="burnintextborder" type="number" min="0" max="20" value="0">
-                </span>
-                <span class="padleftspan">
-                    <label for="burnintextbordercolor">Text Border Color:</label>
-                    <input id="burnintextbordercolor" type="text" value="#DBDBDBFF" data-jscolor="{}">
-                </span>
-           </p>
-            <p>
-                <span>
-                    <label for="burnintimecode">Burn In Timecode:</label>
-                    <input id="burnintimecode" type="checkbox">
-                </span>
-                <span class="padleftspan">
-                    <label for="burnintimecodelocation">Timecode Location:</label>
-                    <select id="burnintimecodelocation">
-                        <option value="LR">lower right</option>
-                        <option value="LL">lower left</option>
-                        <option value="UR">upper right</option>
-                        <option value="UL">upper left</option>
-                        <option value="DC">centered</option>
-                    </select>
-                </span>
-                <span class="padleftspan">
-                    <label for="burnintimecodesize">Timecode Size:</label>
-                    <input id="burnintimecodesize" type="number" min="5" max="200" value="30">
-                </span>
-                <span class="padleftspan">
-                    <label for="burnintimecodecolor">Timecode Color:</label>
-                    <input id="burnintimecodecolor" type="text" value="#FFAC05FF" data-jscolor="{}">
-                </span>
-                <span class="padleftspan">
-                    <label for="burnintimecodeborder">Timecode Border:</label>
-                    <input id="burnintimecodeborder" type="number" min="0" max="20" value="0">
-                </span>
-                <span class="padleftspan">
-                    <label for="burnintimecodebordercolor">Timecode Border Color:</label>
-                    <input id="burnintimecodebordercolor" type="text" value="#DBDBDBFF" data-jscolor="{}">
-                </span>
-            </p>
-        </div>
+    <h1>MakeVideoProxies v2.0.1</h1>
+    <div id="tabheaders">
+       <div class="tabhead" id="proxytabhead">PROXIES</div>
+       <div class="tabhead" id="settingstabhead">SETTINGS</div>
+       <div class="tabhead" id="abouttabhead">ABOUT</div>
+    </div>
 
-    <p>
-        <label for="proxyjobprogress">Progress: <span id="quelength"></span></label>
-        <progress id="proxyjobprogress" max="100" value="0"></progress>
-        <div>ffmpeg stats: <span id="fpsprogress"></span></div>
-    </p>
-    <p>
-        <label for="activitylog">Activity Log:</label>
-        <div id="activitylog"></div>
-    </p>
+    <div id="proxytab">
+        <p>
+            <label for="inputdir">Input Directory:<span id="showinputdirhistory">🔽</span></label>
+            <input id="inputdir" list="" autocomplete="off">
+            <datalist id="inputlist"></datalist>
+            <button class="buttons" id="chooseinputdir">Browse for Directory</button>
+            <button class="buttons" id="chooseinputfiles">Browse for Files</button>
+        </p>
+        <p>
+            <button class="buttons" id="scaninputdir">Scan</button>
+        </p>
+        <p>
+            <label for="onlyoneinputleveldeep">Only Go One Input level Deep:</label>
+            <input id="onlyoneinputleveldeep" type="checkbox" checked> <span class="help" id="showonlyoneinputleveldeephelp">?</span>
+        </p>
+        <p>
+            <label for="outputdir">Output Directory:<span id="showoutputdirhistory">🔽</span></label>
+            <input id="outputdir" list="" autocomplete="off">
+            <datalist id="outputlist"></datalist>
+            <button class="buttons" id="chooseoutputdir">Browse</button>
+        </p>
+        <p>
+            <span>
+                <label for="outputwidth">Output Resolution(WxH in px):</label>
+                <input id="outputwidth" type="number" min="10" max="100000">X<input id="outputheight" type="number" min="10" max="100000">
+            </span>
+            <span class="padleftspan">
+                <label for="outputpreset">Presets:</label>
+                <select id="outputpreset">
+                        <option value="640|360">select to apply</option>
+                        <option value="426|240">426x240 (1.78) 16:9</option>
+                        <option value="640|268">640x268 (2.39)</option>
+                        <option value="640|272">640x272 (2.35)</option>
+                        <option value="640|360">640x360 (1.78) 16:9</option>
+                        <option value="640|480">640x480 (1.33) 4:3</option>
+                        <option value="854|480">854x480 (1.78) 16:9</option>
+                        <option value="800|600">800x600 (1.33) 4:3</option>
+                        <option value="1024|768">1024x768 (1.33) 4:3</option>
+                        <option value="1280|720">1280x720 (1.78) 16:9</option>
+                        <option value="1280|800">1280x800 (1.6) 16:10</option>
+                        <option value="1366|768">1366x768 (1.78) 16:9</option>
+                        <option value="1440|900">1440x900 (1.6) 16:10</option>
+                        <option value="1920|1080">1920x810 (2.37) 64:27</option>
+                        <option value="1920|1080">1920x1080 (1.78) 16:9</option>
+                        <option value="2048|872">2048x872 (1.89) 256:109</option>
+                        <option value="2048|1080">2048x1080 (1.89) 256:135</option>
+                        <option value="2048|1152">2048x1152 (1.89)</option>
+                        <option value="2048|1536">2048x1536 (1.89)</option>
+                        <option value="2048|1556">2048x1556 (1.89)</option>
+                        <option value="2560|1440">2560x1440 (1.78) 16:9</option>
+                        <option value="3072|2160">3072x2160 (1.78) ARRI 2.8K</option>
+                        <option value="3200|1800">3200x1800 (1.78) ARRI 3.2K</option>
+                        <option value="3424|2202">3424x2202 (1.78) ARRI 3.4K</option>
+                        <option value="3840|2160">3840x2160 (1.78) 16:9</option>
+                        <option value="4096|3072">4096x3072 (1.78) 16:9</option>
+                        <option value="4096|3112">4096x3112 (1.32) 35mm 4k scan</option>
+                        <option value="4480|2304">4480x2304 (1.32) RED 4K</option>
+                        <option value="4608|2160">4608x2160 (1.32) RED 4.5K</option>
+                        <option value="5120|2700">5120x2700 (1.32) RED 5K</option>
+                        <option value="6144|3160">6144x3160 (1.32) RED 6K</option>
+                        <option value="7680|4320">7680x4320 (1.78) 16:9</option>
+                        <option value="8192|4320">8192x4320 (1.78) RED 8K</option>
+                        <option disabled>Social Media</option>
+                            <optgroup label="&nbsp;&nbsp;&nbsp;&nbsp;Facebook">
+                                <option value="1280|720">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1280x720  Feed Landscape</option>
+                                <option value="720|1280">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;720x1280  Feed Full Portrait 9:16</option>
+                                <option value="1080|1350">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1080×1350  Feed Portrait 4:5</option>
+                                <option value="600|900">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;600x900  Feed Portrait 2:3</option>
+                                <option value="600|600">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;600x600  Feed Square 1:1</option>
+                                <option value="4096|2048">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4096x2048  360</option>
+                                <option value="1280|720">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1280x720 In-Stream Video Ads 16:9</option>
+                                <option value="600|315">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;600x315 In-Stream Video Ads 1.9:1</option>
+                                <option value="600|600">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;600x600 In-Stream Video Ads 1:1</option>
+                                <option value="1280|720">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1280x720 Messenger Stories Ads 16:9</option>
+                                <option value="600|315">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;600x315 Messenger Stories Ads 1.9:1</option>
+                                <option value="1080|1080">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1080x1080 Carousel Video Ads  1:1</option>
+                                <option value="600|315">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;600x315 Carousel Video Ads 1.9:1</option>
+                                <option value="600|600">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;600x600 Carousel Video Ads 1:1</option>
+                                <option value="1200|628">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1200x628 Collection Cover Video</option>
+                                <option value="600|315">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;600x315 Collection Cover Video 1.9:1</option>
+                                <option value="600|600">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;600x600 Collection Cover Video 1:1</option>
+                                <option value="1280|720">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1280x720 Slideshow</option>
+                            </optgroup>
+                            <optgroup label="&nbsp;&nbsp;&nbsp;&nbsp;Instagram">
+                                <option value="1280|720">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1280x720 in-feed video and video ads 16:9</option>
+                                <option value="600|315">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;600x315 Carousel Video Ads 1.9:1</option>
+                                <option value="600|600">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;600x600 Carousel Video Ads 1:1</option>
+                                <option value="600|750">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;600x750 Carousel Video Ads 4:5</option>
+                                <option value="1080|1080">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1080x1080 Carousel Video Ads  1:1</option>
+                                <option value="600|600">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;600x600 Carousel Video Ads 1:1</option>
+                                <option value="1080|1920">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1080x1920 Stories Video Ads 9:16</option>
+                            </optgroup>
+                            <optgroup label="&nbsp;&nbsp;&nbsp;&nbsp;Twitter">
+                                <option value="1920|1200">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1920x1200 Horizontal Videos 1.58 8:5</option>
+                                <option value="1200|1900">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1200x1900 Vertical Videos 0.63 12:19</option>
+                            </optgroup>
+                            <optgroup label="&nbsp;&nbsp;&nbsp;&nbsp;Snapchat">
+                                <option value="1080|1920">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1080x1920 All videos 0.56 9:16</option>
+                            </optgroup>
+                            <optgroup label="&nbsp;&nbsp;&nbsp;&nbsp;YouTube">
+                                <option value="426|240">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;426x240 240p (1.78) 16:9</option>
+                                <option value="640|360">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;640x360 360p (1.78) 16:9</option>
+                                <option value="854|480">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;854x480 480p (1.78) 16:9</option>
+                                <option value="1280|720">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1280x720 720p (1.78) 16:9</option>
+                                <option value="1920|1080">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1920x1080 1080p (1.78) 16:9</option>
+                                <option value="2560|1440">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2560x1440 1440p (1.78) 16:9</option>
+                                <option value="3840|2160">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3840x2160 2160p (1.78) 16:9</option>
+                            </optgroup>
+                            <optgroup label="&nbsp;&nbsp;&nbsp;&nbsp;LinkedIn">
+                                <option value="1280|720">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1280x720  16:9</option>
+                            </optgroup>
+                            <optgroup label="&nbsp;&nbsp;&nbsp;&nbsp;Pinterest">
+                                <option value="1280|720">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1280x720  16:9</option>
+                            </optgroup>
+                        <option disabled>TV</option>
+                            <optgroup label="&nbsp;&nbsp;&nbsp;&nbsp;3K UHD">
+                                <option value="2880|1180">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2880 x 1180 (2.44)</option>
+                                <option value="2880|1200">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2880 x 1200 (2.40)</option>
+                                <option value="2880|1205">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2880 x 1205 (2.39)</option>
+                                <option value="2880|1215">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2880 x 1215 (2.37)</option>
+                                <option value="2880|1226">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2880 x 1226 (2.35)</option>
+                                <option value="2880|1440">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2880 x 1440 (2.00)</option>
+                                <option value="2880|1516">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2880 x 1516 (1.90)</option>
+                                <option value="2880|1557">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2880 x 1557 (1.85)</option>
+                                <option value="2880|1620">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2880 x 1620 (1.78) 16:9</option>
+                                <option value="2880|1728">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2880 x 1728 (1.66) 5:3</option>
+                                <option value="2880|2160">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2880 x 2160 (1.33) 4:3</option>
+                            </optgroup>
+                            <optgroup label="&nbsp;&nbsp;&nbsp;&nbsp;4K UHD">
+                                <option value="3840|1574">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3840 x 1574 (2.44)</option>
+                                <option value="3840|1600">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3840 x 1600 (2.40)</option>
+                                <option value="3840|1607">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3840 x 1607 (2.39)</option>
+                                <option value="3840|1620">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3840 x 1620 (2.37)</option>
+                                <option value="3840|1634">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3840 x 1634 (2.35)</option>
+                                <option value="3840|1920">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3840 x 1920 (2.00)</option>
+                                <option value="3840|2021">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3840 x 2021 (1.90)</option>
+                                <option value="3840|2076">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3840 x 2076 (1.85)</option>
+                                <option value="3840|2160">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3840 x 2160 (1.78) 16:9</option>
+                                <option value="3840|2304">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3840 x 2304 (1.66) 5:3</option>
+                                <option value="3840|2880">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3840 x 2880 (1.33) 4:3</option>
+                            </optgroup>
+                            <optgroup label="&nbsp;&nbsp;&nbsp;&nbsp;8K UHD">
+                                <option value="7680|3148">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;7680 x 3148 (2.44)</option>
+                                <option value="7680|3200">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;7680 x 3200 (2.40)</option>
+                                <option value="7680|3213">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;7680 x 3213 (2.39)</option>
+                                <option value="7680|3240">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;7680 x 3240 (2.37)</option>
+                                <option value="7680|3268">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;7680 x 3268 (2.35)</option>
+                                <option value="7680|3840">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;7680 x 3840 (2.00)</option>
+                                <option value="7680|4042">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;7680 x 4042 (1.90)</option>
+                                <option value="7680|4151">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;7680 x 4151 (1.85)</option>
+                                <option value="7680|4320">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;7680 x 4320 (1.78) 16:9</option>
+                                <option value="7680|4608">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;7680 x 4608 (1.66) 5:3</option>
+                                <option value="7680|5760">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;7680 x 5760 (1.33) 4:3</option>
+                            </optgroup>
+                        <option disabled>Cinema</option>
+                            <optgroup label="&nbsp;&nbsp;&nbsp;&nbsp;DCP 2K">
+                                <option value="1998|1080">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1998 x 1080 (1.85) 37:20 DCP Flat</option>
+                                <option value="2048|1080">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2048 x 1080 (1.9) 1024:429 DCP Full</option>
+                                <option value="2048|858">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2048 x 858 (2.39) 1024:429 DCP Scope</option>
+                            </optgroup>
+                            <optgroup label="&nbsp;&nbsp;&nbsp;&nbsp;DCP 4K">
+                                <option value="3996|2160">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3996 x 2160 (1.85) 37:20 DCP Flat</option>
+                                <option value="4096|2160">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4096 x 2160 (1.9) 1024:429 DCP Full</option>
+                                <option value="4096|1716">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4096 x 1716 (2.39) 1024:429 DCP Scope</option>
+                            </optgroup>
 
-    <div class="helpbox" id="abouthelp" style="display:none;">
-        <div class="helpboxcloser">☒</div>
-        <div class="helpboxcontent">
-            <h1>About:</h1>
-            <p>This program, like many others, is only a wrapper around FFMPEG which does all the heavy lifting. If you have questions about FFMPEG then google your life away on the subject. </p>
-            <p>I wrote this program over the space of a month while I was in the Jungle in Columbia South America acting in a movie. I had lots of time on my hands in the hotel and had only brought my old slow MacBookPro which was far too slow to edit some of the HD footage I was shooting on my own as a way to both kill time and help explore my character's backstory.</p>
+                    </select>
+            </span>
+            <span class="padleftspan">
+                <label for="outputfps">Output FPS:</label>
+                <input id="outputfps" type="number" min="0" max="100000">FPS <span class="help" id="showoutputfpshelp">?</span>
+            </span>
+        </p>
+        <p>
+            <span>
+                <label for="appendtoqueue">Append Files to Queue:</label>
+                <input id="appendtoqueue" type="checkbox"> <span class="help" id="showappendtoqueuehelp">?</span>
+            </span>
+            <span class="padleftspan">
+                <label for="onlymakenew">Only Make New Files:</label>
+                <input id="onlymakenew" type="checkbox"> <span class="help" id="showonlymakenewfileshelp">?</span>
+            </span>
+            <span class="padleftspan">
+                <label for="autocrop">Auto Crop:</label>
+                <input id="autocrop" type="checkbox"> <span class="help" id="showautocrophelp">?</span>
+            </span>
+            <span class="padleftspan">
+                <label for="htmlgallery">Create HTML Gallery:</label>
+                <input id="htmlgallery" type="checkbox"> <span class="help" id="showcreatehtmlgalleryhelp">?</span>
+            </span>
+        </p>
+        <p>
+            <span>
+                <button class="buttons" id="startmakingproxies">Start Making Proxies</button>
+            </span>
+            <span class="padleftspan">
+                <button class="buttons" id="advanced">Show Advanced</button>
+            </span>
+            <span class="padleftspan">
+                <button class="buttons" id="pauseproxyjob" disabled>Pause Proxy Job</button>
+            </span>
+            <span class="padleftspan">
+                <button class="buttons" id="killproxyjob" disabled>Stop Proxy Job</button>
+            </span>
+        </p>
+            <div id="advancedsettings" style="display:none">
+                <p>
+                    <label for="outputvideocontainer">Output File Container:</label>
+                    <select id="outputvideocontainer">
+                        <option value="mov">.mov</option>
+                        <option value="mp4">.mp4</option>
+                        <option value="avi">.avi</option>
+                        <option value="mkv">.mkv</option>
+                        <option value="m4v">.m4v</option>
+                        <option value="gif">.gif</option>
+                        <option value="webm">.webm</option>
+                        <option value="ogv">.ogv</option>
+                        <option value="mjpeg">.mjpeg</option>
+                        <option value="3gp">.3gp</option>
+                        <option value="mpeg">.mpeg</option>
+                        <option value="mxf">.mxf</option>
+                    </select> <span class="help" id="showfilecontainerhelp">?</span>
+                </p>
+                <p>
+                    <label for="outputvideocodec">Output Video Codec:</label>
+                    <select id="outputvideocodec">
+                        <option value="h263">H263</option>
+                        <option value="libx264">H264</option>
+                        <option value="libx264rgb">H264(rgb)</option>
+                        <option value="libx265">H265</option>
+                        <option value="dnxhd">DNxHD</option>
+                        <option value="prores_ks">Apple ProRes</option>
+                        <option value="vp9">VP9</option>
+                        <option value="jpeg2000">JPEG 2000</option>
+                        <option value="mpeg4">MPEG-4</option>
+                        <option value="mpeg1video">MPEG-1</option>
+                        <option value="libtheora">Theora (codec theora)</option>
+                        <option value="mjpeg">MJPEG (Motion JPEG)</option>
+                        <option value="huffyuv">Huffyuv / HuffYUV</option>
+                    </select>  <span class="help" id="showvideocodecshelp">?</span>
+                </p>
+                <p>
+                    <label for="outputvideopxlfmt">Output Video Pixel Format (bit depth):</label>
+                    <select id="outputvideopxlfmt">
+                        <option value="yuv410p">yuv410p (8-bit)(jpeg2000)</option>
+                        <option value="yuv411p">yuv411p (8-bit)(jpeg2000)</option>
+                        <option value="yuv420p">yuv420p (8-bit)(h263/h264/h265/DNxHD/vp9/jpeg2000/mpeg4/mpeg1video/theora)</option>
+                        <option value="yuva420p">yuva420p (8-bit)(vp9)</option>
+                        <option value="yuvj420p">yuvj420p (8-bit)(h264/h265/mjpeg)</option>
+                        <option value="yuv422p">yuv422p (8-bit)(h264/h265/vp9/jpeg2000/theora/huffyuv)</option>
+                        <option value="yuvj422p">yuvj422p (8-bit)(h264/h265/mjpeg)</option>
+                        <option value="yuv440p">yuv440p (8-bit)(vp9)</option>
+                        <option value="yuv444p">yuv444p (8-bit)(h264/h265/vp9/jpeg2000/theora)</option>
+                        <option value="yuvj444p">yuvj444p (8-bit)(h264/h265/mjpeg)</option>
+                        <option value="gbrp">gbrp (h265/vp9)</option>
+                        <option value="nv12">nv12 (h264)</option>
+                        <option value="nv16">nv16 (h264)</option>
+                        <option value="nv21">nv21 (h264)</option>
+                        <option value="yuv420p10le">yuv420p10le (10-bit)(h264/h265/vp9)</option>
+                        <option value="yuv422p10le">yuv422p10le (10-bit)(h264/h265/prores/vp9)</option>
+                        <option value="yuv440p10le">yuv422p10le (10-bit)(vp9)</option>
+                        <option value="yuv444p10le">yuv444p10le (10-bit)(h264/h265/prores/vp9)</option>
+                        <option value="yuva444p10le">yuva444p10le (10-bit)(prores)</option>
+                        <option value="nv20le">nv20le (h264)</option>
+                        <option value="gbrp10le">gbrp10le (h265)</option>
+                        <option value="yuv420p12le">yuv420p12le (12-bit)(h265)</option>
+                        <option value="yuv422p12le">yuv422p12le (12-bit)(h265/vp9)</option>
+                        <option value="yuv440p12le">yuv440p12le (12-bit)(vp9)</option>
+                        <option value="yuv444p12le">yuv444p12le (12-bit)(h265/vp9)</option>
+                        <option value="gbrp12le">gbrp12le (12-bit)(h265)</option>
+                        <option value="gray">gray (8-bit)(h265/jpeg2000)</option>
+                        <option value="gray10le">gray10le (10-bit)(h265/vp9)</option>
+                        <option value="gray12le">gray12le (12-bit)(h265/vp9)</option>
+                        <option value="rgb24">rgb24 (jpeg2000/huffyuv)</option>
+                        <option value="bgra">bgra (huffyuv)</option>
+                        <option value="pal8">pal8 (jpeg2000)</option>
+                    </select> <span class="help" id="showpixfmthelp">?</span>
+                </p>
+                <p>
+                    <label for="outputvideopreset">Output Video H264/H265 preset:</label>
+                    <select id="outputvideopreset">
+                        <option value="ultrafast">ultrafast</option>
+                        <option value="superfast">superfast</option>
+                        <option value="veryfast">veryfast</option>
+                        <option value="faster">faster</option>
+                        <option value="fast">fast</option>
+                        <option value="medium">medium (default)</option>
+                        <option value="slow">slow</option>
+                        <option value="slower">slower</option>
+                        <option value="veryslow">veryslow</option>
+                    </select> <span class="help" id="showh264h265presethelp">?</span>
+                </p>
+                <p>
+                    <label for="outputvideotune">Output Video H264/H265 tune:</label>
+                    <select id="outputvideotune">
+                        <option value="none">none - do not use a tune option</option>
+                        <option value="film">film – use for high quality movie content; lowers deblocking</option>
+                        <option value="animation">animation – good for cartoons; uses higher deblocking and more reference frames</option>
+                        <option value="grain">grain – preserves the grain structure in old, grainy film material</option>
+                        <option value="stillimage">stillimage – good for slideshow-like content</option>
+                        <option value="fastdecode">fastdecode – allows faster decoding by disabling certain filters </option>
+                        <option value="zerolatency">zerolatency – good for fast encoding and low-latency streaming</option>
+                    </select>  <span class="help" id="showh264h265tunehelp">?</span>
+                </p>
+                <p>
+                    <label for="outputvideocrf">Output Video H264/H265 CRF:</label>
+                    <input id="outputvideocrf" type="number" value="20" min="0" max="63"> <span class="help" id="showh264h265crfhelp">?</span>
+                </p>
+                <p>
+                    <label for="faststartforwebvideo">H264/H265 Faststart for web video:</label>
+                    <input id="faststartforwebvideo" type="checkbox">  <span class="help" id="showh264h265faststarthelp">?</span>
+                </p>
+                <p>
+                    <label for="outputvideoproresprofile">Output Video ProRes profile:</label>
+                    <select id="outputvideoproresprofile">
+                        <option value="0">proxy</option>
+                        <option value="1">lt</option>
+                        <option value="2">standard</option>
+                        <option value="3">hq</option>
+                        <option value="4">4444</option>
+                        <option value="5">4444xq</option>
+                    </select> <span class="help" id="showproresprofilehelp">?</span>
+                </p>
+                <p>
+                    <label for="outputvideoproresqscale">Output Video ProRes Qscale:</label>
+                    <input id="outputvideoproresqscale" type="number" value="0" min="0" max="32"> <span class="help" id="showproresqscalehelp">?</span>
+                </p>
+                <p>
+                    <span>
+                        <label for="outputaudiocodec">Output Audio Codec:</label>
+                        <select id="outputaudiocodec">
+                            <option value="aac">AAC (Advanced Audio Coding)</option>
+                            <option value="flac">FLAC (Free Lossless Audio Codec)</option>
+                            <option value="mp2">MP2 (MPEG audio layer 2)</option>
+                            <option value="libmp3lame">MP3 (MPEG audio layer 3)</option>
+                            <option value="libopencore_amrnb">OpenCORE AMR-NB (Adaptive Multi-Rate Narrow-Band)</option>
+                            <option value="libvorbis">Vorbis</option>
+                            <option value="truehd">TrueHD</option>
+                            <option value="pcm_s8">PCM signed 8-bit</option>
+                            <option value="pcm_s16le">PCM signed 16-bit little-endian</option>
+                            <option value="pcm_s24le">PCM signed 24-bit little-endian</option>
+                            <option value="pcm_s32le">PCM signed 32-bit little-endian</option>
+                            <option value="pcm_f32le">PCM 32-bit floating point little-endian</option>
+                            <option value="pcm_f64le">PCM 64-bit floating point little-endian</option>
+                            <option value="copy">Copy</option>
+                            <option value="none">no audio</option>
+                        </select> <span class="help" id="showaudiocodechelp">?</span>
+                    </span>
+                    <span class="padleftspan">
+                        <label for="outputaudiobitrate">Audio Bitrate:</label>
+                        <select id="outputaudiobitrate">
+                            <option value="default">default</option>
+                            <option value="16k">16kb/sec</option>
+                            <option value="18k">18kb/sec</option>
+                            <option value="20k">20kb/sec</option>
+                            <option value="24k">24kb/sec</option>
+                            <option value="32k">32kb/sec</option>
+                            <option value="40k">40kb/sec</option>
+                            <option value="48k">48kb/sec</option>
+                            <option value="56k">56kb/sec</option>
+                            <option value="64k">64kb/sec</option>
+                            <option value="80k">80kb/sec</option>
+                            <option value="96k">96kb/sec</option>
+                            <option value="112k">112kb/sec</option>
+                            <option value="128k">128kb/sec</option>
+                            <option value="160k">160kb/sec</option>
+                            <option value="192k">192kb/sec</option>
+                            <option value="224k">224kb/sec</option>
+                            <option value="320k">320kb/sec</option>
+                            <option value="384k">384kb/sec</option>
+                            <option value="448k">448kb/sec</option>
+                            <option value="512k">512kb/sec</option>
+                            <option value="576k">576kb/sec</option>
+                        </select>
+                    </span>
+                    <span class="padleftspan">
+                        <label for="outputaudiochannels">Audio Channels:</label>
+                        <select id="outputaudiochannels">
+                            <option value="default">default</option>
+                            <option value="2">Stereo</option>
+                            <option value="1">Mono</option>
+                        </select>
+                    </span>
+                </p>
+                <p>
+                    <label for="customffmpegoptions">Custom ffmpeg options:</label><span class="help" id="showcustomeffmpegoptionshelp">?</span><br>
+                    <input id="customffmpegoptions">
+                </p>
+                <p>
+                    <label for="hardwareacceleration">Turn on hardware acceleration</label>
+                    <input id="hardwareacceleration" type="checkbox"> <span class="help" id="showhardwareaccelhelp">?</span>
+                </p>
+                <p id="burnintextpara">
+                    <label for="burnintext">Burn In Text: (type in this box to add burn in text)</label>
+                    Actual Size:(<span id="burnintextrezw">640</span>x<span id="burnintextrezh">360</span>)
+                    Preview Zoom:<button class="smallbuttons" id="burnintextpreviewshrink100">100%</button>
+                    <button class="smallbuttons" id="burnintextpreviewshrink050">50%</button>
+                    <button class="smallbuttons" id="burnintextpreviewshrink025">25%</button>
+                    <button class="smallbuttons" id="burnintextpreviewshrink012">12.5%</button>
+                    <span class="help" id="showburninhelp">?</span><br>
+                    <div id="burnintext" contenteditable="true"></div>
+                </p>
+                <p>
+                    <label for="burnintextfont">Text Font:</label>
+                    <select id="burnintextfont"></select>
+                </p>
+                <p>
+                    <span>
+                        <label for="burnintextlocation">Text Location:</label>
+                        <select id="burnintextlocation">
+                            <option value="DC">centered</option>
+                            <option value="LR">lower right</option>
+                            <option value="LL">lower left</option>
+                            <option value="UR">upper right</option>
+                            <option value="UL">upper left</option>
+                        </select>
+                    </span>
+                    <span class="padleftspan">
+                        <label for="burnintextsize">Text Size:</label>
+                        <input id="burnintextsize" type="number" min="5" max="200" value="30">
+                    </span>
+                    <span class="padleftspan">
+                        <label for="burnintextcolor">Text Color: (and Opacity)</label>
+                        <input id="burnintextcolor" type="text" value="#FFFFFFFF" data-jscolor="{}">
+                    </span>
+                    <span class="padleftspan">
+                        <label for="burnintextborder">Text Border:</label>
+                        <input id="burnintextborder" type="number" min="0" max="20" value="0">
+                    </span>
+                    <span class="padleftspan">
+                        <label for="burnintextbordercolor">Text Border Color:</label>
+                        <input id="burnintextbordercolor" type="text" value="#DBDBDBFF" data-jscolor="{}">
+                    </span>
+               </p>
+                <p>
+                    <span>
+                        <label for="burnintimecode">Burn In Timecode:</label>
+                        <input id="burnintimecode" type="checkbox">
+                    </span>
+                    <span class="padleftspan">
+                        <label for="burnintimecodelocation">Timecode Location:</label>
+                        <select id="burnintimecodelocation">
+                            <option value="LR">lower right</option>
+                            <option value="LL">lower left</option>
+                            <option value="UR">upper right</option>
+                            <option value="UL">upper left</option>
+                            <option value="DC">centered</option>
+                        </select>
+                    </span>
+                    <span class="padleftspan">
+                        <label for="burnintimecodesize">Timecode Size:</label>
+                        <input id="burnintimecodesize" type="number" min="5" max="200" value="30">
+                    </span>
+                    <span class="padleftspan">
+                        <label for="burnintimecodecolor">Timecode Color:</label>
+                        <input id="burnintimecodecolor" type="text" value="#FFAC05FF" data-jscolor="{}">
+                    </span>
+                    <span class="padleftspan">
+                        <label for="burnintimecodeborder">Timecode Border:</label>
+                        <input id="burnintimecodeborder" type="number" min="0" max="20" value="0">
+                    </span>
+                    <span class="padleftspan">
+                        <label for="burnintimecodebordercolor">Timecode Border Color:</label>
+                        <input id="burnintimecodebordercolor" type="text" value="#DBDBDBFF" data-jscolor="{}">
+                    </span>
+                </p>
+                <p>
+                    <span>
+                        <label for="htmlgalleryfilename">HTML Gallery File Name:</label>
+                        <input id="htmlgalleryfilename" type="text" value="">
+                    </span>
+                    <span class="padleftspan">
+                        <label for="htmlgalleryfilenamevariables">File Name Variables:</label>
+                        <select id="htmlgalleryfilenamevariables">
+                            <option value="">none</option>
+                            <option value="datetimestamp">DateTime Stamp</option>
+                            <option value="random">Random</option>
+                        </select>
+                    </span>
+                </p>
+            </div>
+
+        <p>
+            <label for="proxyjobprogress">Progress: <span id="quelength"></span></label>
+            <progress id="proxyjobprogress" max="100" value="0"></progress>
+            <div>ffmpeg stats: <span id="fpsprogress"></span></div>
+        </p>
+        <p>
+            <label for="activitylog">Activity Log:</label>
+            <div id="activitylog"></div>
+        </p>
+    </div>
+
+    <div id="abouttab" style="display:none;">
+        <h1>About:</h1>
+            <p>This program, like many others, is mostly a very complicated wrapper around FFMPEG which does all the heavy lifting. If you have questions about FFMPEG then google your life away on the subject. </p>
+            <p>I wrote this program over the space of a month while I was in the jungle in Columbia South America acting in a movie. I had lots of time on my hands in the hotel and had only brought my old slow MacBookPro which was far too slow to edit some of the HD footage I was shooting on my own as a way to both kill time and help explore my character's backstory.</p>
             <p>The initial program was just a static Perl script that I would run on the command line to batch convert all the 1920x1080p and 1920x810p stuff down to 640x360.</p>
             <p>I make no claims that this program is perfect or even very good. If it helps you then great. If it does not then well you get what you pay for.</p>
+            <p>I will be changing the name of this program to 'Tedium' at the next version. Because editing is tedious and this was always thought of as a tool to do tedius stuff automatically.</p>
             <p>Happy converting...</p>
             <p>-Raymond Steers</p>
             <h1>Version Changes:</h1>
             <ul>
+                <li>Upcoming features:</li>
+                    <ul>
+                        <li>Application rename.</li>
+                        <li>Proxies tab will be renamed to 'Transcoding'.</li>
+                        <li>FTP uploads</li>
+                        <li>Email Notifications</li>
+                        <li>Offloading (file copying)</li>
+                        <li>Team feeback system.</li>
+                        <li>Multi-output transcoding.</li>
+                        <li>Parallel processing.</li>
+                        <li>Log saveable to file(s) / reports.</li>
+                    </ul>
+                <li>2.0.0</li>
+                    <ul>New Features:
+                        <li>Use system fonts for burn in text.</li>
+                        <li>The ability to use fonts found on the system allows the use of non EN languages if you choose the right font.</li>
+                        <li>Alter the HTML gallery file name.</li>
+                        <li>File name modifiers for the HTML gallery file name, TimeStamp and UUID.</li>
+                        <li>Burnin in text input control is now a preview window for size, shape, font colors, and sizes.</li>
+                        <li>Zoom controls for preview window.</li>
+                        <li>Automatic zooming for preview window.</li>
+                        <li>Tab Layout.</li>
+                        <li>Settings Tab.</li>
+                        <li>Show large screen status.</li>
+                        <li>Timestamps for the log, which show a full date on mouseover hover after a few secs.</li>
+                        <li>Presets dropdown for loading WxH of many standard sizes, but is really just a good reference to have.</li>
+                        <li>Metadata variables for text burnin.</li>
+                        <li>Colorized log lines for video atributes found during scanning.</li>
+                        <li>Details button which opens up video and metadata atributes found during scanning. (a raw dump from ffprobe)</li>
+                        <li>Stopping the system from putting the display to sleep during proxy making.</li>
+                        <li>ESC key closes details windows and directory path history drop downs.</li>
+                        <li>Directory path history dropdowns now change the down arrow icon to up when open.</li>
+                        <li>Saving of window size and location.</li>
+                        <li>Gallery HTML improved and mobile layout added.</li>
+                    </ul>
+                    <ul>Bug fixes:
+                        <li>On Windows the depth of scanning the input dir was set to 1 when it should have been 0. This was a bug in a 3rd party sub module, the sub module was removed and the file system tree walker was rewriten by hand.</li>
+                    </ul>
                 <li>1.1.0 from 1.0.0 </li>
                     <ul>(based on feedback from Jonas Talkington)
                         <li>When going NOT in fullscreen,  the little help notes do not scroll, and they are cut off on the bottom</li>
@@ -364,6 +613,20 @@
                         <li>Initial features and design set by Raymond Steers.</li>
                     </ul>
             </ul>
+    </div>
+    <div id="settingstab" style="display:none;">
+        <h1>Settings:</h1>
+        <p>
+            <label for="largescreenstatus">Show Large Screen Status:</label>
+            <input id="largescreenstatus" type="checkbox"> <span class="help" id="showlargescreenstatushelp">?</span>
+        </p>
+    </div>
+
+    <div class="helpbox" id="largescreenstatushelp" style="display:none;">
+        <div class="helpboxcloser">☒</div>
+        <div class="helpboxcontent">
+            <h1>Large Screen Status Help:</h1>
+            <p>Checking this box will open a big bright window to show the status (or progress) of your job. Which hopefully will make it easier to see from across the room.</p>
         </div>
     </div>
     <div class="helpbox" id="outputfpshelp" style="display:none;">
@@ -417,6 +680,13 @@
         <div class="helpboxcontent">
             <h1>Create HTML Gallery Help:</h1>
             <p>Checking this box will create a file in the output directory called 'gallery.html' which you can then just double click on and open it in a browser. This will allow you to see a usable gallery of all the proxies made and play them. It will be overwritten on each run.</p>
+            <p>If in the advanced section you put anything in the 'HTML Gallery File Name' box THEN that will be used as the file name. It will NOT allow you to use any characters besides 0-9, a-z, A-Z, and underscore. All other characters will be removed. Also you do not need to add '.html' at the end and if you do that will be removed also and then added later when created.</p>
+            <p>If you change the 'File Name Variables' dropdown to 'DateTime Stamp' THEN the gallery file name will be either 'gallery-YYYY-MM-DD-hh-mm-ss.html' OR it will be whatever you typed in the file name box plus '-YYYY-MM-DD-hh-mm-ss.html'</p>
+            <p>If you change the 'File Name Variables' dropdown to 'Random' THEN the gallery file name will be either 'gallery-3d0b3e91-8181-41e7-a3cc-c4870d4bd64c.html' (a RFC4122 version 4 UUID) OR it will be whatever you typed in the file name box plus a UUID plus '.html'</p>
+            <p>In either case, adding a variable will keep the old gallery html file from getting overwritten. This is part of the intent obviously.</p>
+            <p>As to WHY you might want to do this:</p>
+            <p>IF you want to keep a history of what the output state of videos are then datetime stamps in the name will do that providing you don't go deleting or overwriting the video files.</p>
+            <p>IF you want to post the gallery to the web somewhere so that you can share it will others, then using random gallery file names provides you with some security through obsecurity as the file name will not be guessable or tumbleable (at least not easily enough to be finished before your film has been over for a few years)</p>
         </div>
     </div>
     <div class="helpbox" id="filecontainerhelp" style="display:none;">
@@ -531,6 +801,8 @@
         <div class="helpboxcontent">
             <h1>Audio Codec Help:</h1>
             <p>Go here and read this: https://trac.ffmpeg.org/wiki/Encode/HighQualityAudio</p>
+            <p>If you have for example files from a cinema grade video camera then it is possible that it might contain multitrack uncompressed source audio and you might very want to reduce the video rezolution but keep all the audio tracks intact. In that case you would want to choose 'copy' for the codec and set the bitrate and channels to 'default', failing to do this you will end up mixing down your tracks to either stereo or mono.</p>
+            <p>Conversely, if you are making a bunch of small preview files that you want to play fast over teh web or on mobile then you might want to choose AAC or MP3 and set the channels to 'mono' and then reduce the bitrate to something low like '32k' which will give you crappy audio but it will greatly reduce the file size. Understand the default bitrate for AAC is 128k/sec, so choosing 'default' and choosing AAC or MP3 will give you 128k.</p>
         </div>
     </div>
     <div class="helpbox" id="customffmpegoptionshelp" style="display:none;">
@@ -562,11 +834,16 @@
             <p>You can set the location, color, size, and border, of each item.</p>
             <p>When setting the color, you will find a color picker will pop up when you click on the little color squares and you can not only change the color but also the opacity (alpha). This is helpful if you want to make watermarks.</p>
             <p>The system makes no attempt to stop you from putting more text in the box than will show up on the screen. In other words your text can easily run off the screen if you have too many characters and too big a font size.</p>
+            <p>The text input control for the burn in text is ALSO a preview of how it will look in the final video. Consider the purple-blue gradient background to be your video. As you change the resolution of the output this box will size itself to those same dimentions. If you are trying to scale to 1920 wide and your computer screen is only 1280 wide then you can hit one of the 4 zoom buttons to shrink the preview. Also clicking the Show Advanced button on and off will automatically zoom it down to a usable size for you.</p>
+            <p>This preview is NOT 100% accurate!!! That would be rather impossible actually unless we had FFMPEG make a single jpg frame of the video and then loaded it each and every time you changed a setting which would be super slow. The text border preview is not perfect (which you will be warned about the first time you crank it up more than zero), and setting text all the way as wide as possible to the edge of the video is not advisable as FFMPEG might scale the font very slightly differently.</p>
+            <p>NOT ALL your fonts will work right. Especially if you are on Windows and you are using extended characters above the standard Latin set. For example if you try to type Russian using a font that has no Russian characters then you will get weird boxy garbage stuff. This is a Windows problem and not a problem with this program. Mac fonts generally don't have this issue as Mac (having a UNIX core) knows how to actually do UTF8 correctly (more or less). The point is if you choose a font and see no change in the text, but most of your other fonts do change the text, please don't report this as a bug. It's not a bug, it's you baby.</p>
+            <p>You CAN insert METADATA VARIABLES into the text. For example if your camera inserts metadata into it's video files with interesting and helpful information like ARRI camera will insert the metadata tag "com.arri.camera.ExposureIndexAsa" which means ISO actually, and you want this burnt in, then you can use that as a variable in the burn in text box by putting a tilde character before and after it like so: "~com.arri.camera.ExposureIndexAsa~" and this will get replaced with the value. You can use as many metadata tags as you want and you can mix them with other normal text. If the metadata tag is not found it will be simply removed from the output. You can find your metadata tags by clicking the little grey "details" buttons in the activity log that are created for each video file after scanning. They will be in the first section indented under "format" and then under "tags".</p>
+            <p>The Timecode does NOT preview. Also it does not have a changeable font. It will use whatever the default font on your system is. If you really want to know what it will look like then just set the text to Arial and type '00:00:00.000' into the text preview and change the settings and that should give you an idea. Note, if you set the screen location of the text AND the timecode to be the same then you will have ugly crap (duh).</p>
             <p>UNDERSTAND...timecode is far more tricky than it seems. The time code is not written into the frame metadata perfectly. In fact there is not a single standard on how this is done from codec to codec and container to container. To simplify, per frame timecode generally starts from zero '00:00:00.000' and IF there is a creation date/time stamp in the overall file metadata THEN this is added as an offest to the frames.</p>
             <p>So, for example, consider the following metadata taken from a MP4 file shot on my Samsung NX300:</p>
             <p><pre>
 here is the header:
-Input #0, mov,mp4,m4a,3gp,3g2,mj2, from '/Volumes/BLUE_1T_USB/backupcopyofcolombiatrip/SnakeOil/vidsrc/aloeplantinpotchinosfrontdoor.MP4':
+Input #0, mov,mp4,m4a,3gp,3g2,mj2, :
   Metadata:
     major_brand     : mp42
     minor_version   : 0
@@ -617,8 +894,8 @@ chroma_location=left
 
 And here is an ARRI prores file:
 
-[mxf @ 0x7fc1f9804400] Estimating duration from bitrate, this may be inaccurate
-Input #0, mxf, from '/Users/rsteers/Downloads/ARRIRAW_Converter_CMD_4.2.3.0_CPU_and_GPU_OS_X_10.13/F003C002_190925_MN99.mxf':
+[mxf @ 0x7fc1f9804400]
+Input #0, mxf, from 'ARRIRAW_Converter_CMD_4.2.3.0_CPU_and_GPU_OS_X_10.13/F003C002_190925_MN99.mxf':
   Metadata:
     product_uid     : 414c4558-4120-4d69-6e69-204c46000000
     uid             : 41374337-3033-1337-3131-2d444637412d
@@ -688,6 +965,7 @@ chroma_location=unspecified
             <p>The 'Border' fields are set to zero by default and they mean pixels of thickness of how much outline (stroke) the text gets. Leaving them at 0 makes no stroke effect. </p>
         </div>
     </div>
+    <div id="largestatus" style="display:none;"><div id="esctip">ESC to exit</div><div id="largestatuscontent">0%</div></div>
     <script src="./jscolor.js"></script>
     <script src="./renderer.js"></script>
   </body>
